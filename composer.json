@@ -1,0 +1,32 @@
+{
+	"name": "leuchtdiode/zend3-ecommerce",
+	"description": "Zend Framework 3 E-commerce module",
+	"type": "library",
+	"license": "MIT",
+	"homepage": "https://try2catch.com",
+	"authors": [
+		{
+			"name": "Alex Schloegl",
+			"email": "alex@try2catch.com",
+			"homepage": "https://try2catch.com",
+			"role": "Developer"
+		}
+	],
+	"keywords": [
+		"Zend Framework 3",
+		"Module",
+		"E-Commerce",
+		"Payment",
+		"Shop"
+	],
+	"require": {
+		"php": ">=7.1",
+		"leuchtdiode/zend3-common": "^0.1",
+		"ramsey/uuid-doctrine": "^1.5"
+	},
+	"autoload": {
+		"psr-4": {
+			"Ecommerce\\": "src/"
+		}
+	}
+}
