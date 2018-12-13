@@ -24,6 +24,13 @@ class Entity
 	private $id;
 
 	/**
+	 * @var string
+	 *
+	 * @ORM\Column(type="string", length=255)
+	 */
+	private $description;
+
+	/**
 	 * @var DateTime
 	 *
 	 * @ORM\Column(type="datetime");
@@ -61,6 +68,22 @@ class Entity
 	public function setId(UuidInterface $id): void
 	{
 		$this->id = $id;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getDescription(): string
+	{
+		return $this->description;
+	}
+
+	/**
+	 * @param string $description
+	 */
+	public function setDescription(string $description): void
+	{
+		$this->description = $description;
 	}
 
 	/**
