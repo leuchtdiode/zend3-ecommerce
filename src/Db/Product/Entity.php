@@ -38,9 +38,16 @@ class Entity
 	private $description;
 
 	/**
+	 * @var int
+	 *
+	 * @ORM\Column(type="integer")
+	 */
+	private $price;
+
+	/**
 	 * @var DateTime
 	 *
-	 * @ORM\Column(type="datetime");
+	 * @ORM\Column(type="datetime")
 	 */
 	private $createdDate;
 
@@ -111,6 +118,22 @@ class Entity
 	public function setDescription(?string $description): void
 	{
 		$this->description = $description;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getPrice(): int
+	{
+		return $this->price;
+	}
+
+	/**
+	 * @param int $price
+	 */
+	public function setPrice(int $price): void
+	{
+		$this->price = $price;
 	}
 
 	/**
