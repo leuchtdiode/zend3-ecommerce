@@ -27,7 +27,7 @@ class Entity
 	 *
 	 * @ORM\Column(type="integer")
 	 */
-	private $amount;
+	private $quantity;
 
 	/**
 	 * @var DateTime
@@ -72,17 +72,17 @@ class Entity
 	/**
 	 * @return int
 	 */
-	public function getAmount(): int
+	public function getQuantity(): int
 	{
-		return $this->amount;
+		return $this->quantity;
 	}
 
 	/**
-	 * @param int $amount
+	 * @param int $quantity
 	 */
-	public function setAmount(int $amount): void
+	public function setQuantity(int $quantity): void
 	{
-		$this->amount = $amount;
+		$this->quantity = $quantity;
 	}
 
 	/**
