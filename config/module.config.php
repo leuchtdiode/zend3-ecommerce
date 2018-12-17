@@ -1,11 +1,25 @@
 <?php
 namespace Ecommerce;
 
+use Common\Router\HttpRouteCreator;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Ramsey\Uuid\Doctrine\UuidType;
 
 return [
 
+	'router' => [
+		'routes' => [
+			'ecommerce' => HttpRouteCreator::create()
+				->setRoute('/ecommerce')
+				->setMayTerminate(false)
+				->setChildRoutes(
+					[
+						'auth' => include 'routes/auth.php',
+					]
+				)
+				->getConfig()
+		],
+	],
 
 	'doctrine' => [
 		'configuration' => [
