@@ -6,6 +6,8 @@ use Ecommerce\Customer\Creator as CustomerCreator;
 use Ecommerce\Product\Attribute\Value\Creator as ProductAttributeValueCreator;
 use Ecommerce\Product\Attribute\Creator as ProductAttributeCreator;
 use Ecommerce\Product\Creator as ProductCreator;
+use Ecommerce\Transaction\Creator as TransactionCreator;
+use Ecommerce\Transaction\Item\Creator as TransactionItemCreator;
 
 class DtoCreatorProvider
 {
@@ -35,18 +37,32 @@ class DtoCreatorProvider
 	private $productAttributeValueCreator;
 
 	/**
+	 * @var TransactionCreator
+	 */
+	private $transactionCreator;
+
+	/**
+	 * @var TransactionItemCreator
+	 */
+	private $transactionItemCreator;
+
+	/**
 	 * @param CustomerCreator $customerCreator
 	 * @param AddressCreator $addressCreator
 	 * @param ProductCreator $productCreator
 	 * @param ProductAttributeCreator $productAttributeCreator
 	 * @param ProductAttributeValueCreator $productAttributeValueCreator
+	 * @param TransactionCreator $transactionCreator
+	 * @param TransactionItemCreator $transactionItemCreator
 	 */
 	public function __construct(
 		CustomerCreator $customerCreator,
 		AddressCreator $addressCreator,
 		ProductCreator $productCreator,
 		ProductAttributeCreator $productAttributeCreator,
-		ProductAttributeValueCreator $productAttributeValueCreator
+		ProductAttributeValueCreator $productAttributeValueCreator,
+		TransactionCreator $transactionCreator,
+		TransactionItemCreator $transactionItemCreator
 	)
 	{
 		$this->customerCreator              = $customerCreator;
@@ -54,6 +70,8 @@ class DtoCreatorProvider
 		$this->productCreator               = $productCreator;
 		$this->productAttributeCreator      = $productAttributeCreator;
 		$this->productAttributeValueCreator = $productAttributeValueCreator;
+		$this->transactionCreator           = $transactionCreator;
+		$this->transactionItemCreator       = $transactionItemCreator;
 
 		$this->handleDependencies();
 	}
@@ -65,6 +83,7 @@ class DtoCreatorProvider
 	{
 		$this->productAttributeValueCreator->setProductAttributeCreator($this->productAttributeCreator);
 		$this->productCreator->setProductAttributeValueCreator($this->productAttributeValueCreator);
+		$this->transactionCreator->setTransactionItemCreator($this->transactionItemCreator);
 	}
 
 	/**
@@ -105,5 +124,21 @@ class DtoCreatorProvider
 	public function getProductAttributeValueCreator(): ProductAttributeValueCreator
 	{
 		return $this->productAttributeValueCreator;
+	}
+
+	/**
+	 * @return TransactionCreator
+	 */
+	public function getTransactionCreator(): TransactionCreator
+	{
+		return $this->transactionCreator;
+	}
+
+	/**
+	 * @return TransactionItemCreator
+	 */
+	public function getTransactionItemCreator(): TransactionItemCreator
+	{
+		return $this->transactionItemCreator;
 	}
 }
