@@ -5,10 +5,11 @@ use Common\Hydration\ObjectToArrayHydrator;
 use Ecommerce\Customer\Auth\LoginData as CustomerLoginData;
 use Ecommerce\Customer\Auth\LoginHandler;
 use Ecommerce\Rest\Action\Base;
+use Ecommerce\Rest\Action\LoginExempt;
 use Ecommerce\Rest\Action\Response;
 use Exception;
 
-class Login extends Base
+class Login extends Base implements LoginExempt
 {
 	/**
 	 * @var LoginData
@@ -57,11 +58,13 @@ class Login extends Base
 		{
 			return Response::is()
 				->successful()
-				->data(ObjectToArrayHydrator::hydrate(
-					LoginSuccessData::create()
-						->setJwtToken($loginResult->getJwtToken())
-						->setCustomer($loginResult->getCustomer())
-				))
+				->data(
+					ObjectToArrayHydrator::hydrate(
+						LoginSuccessData::create()
+							->setJwtToken($loginResult->getJwtToken())
+							->setCustomer($loginResult->getCustomer())
+					)
+				)
 				->dispatch();
 		}
 

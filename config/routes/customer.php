@@ -20,6 +20,20 @@ return HttpRouteCreator::create()
 							->getConfig()
 					]
 				)
+				->getConfig(),
+			'single-item' => HttpRouteCreator::create()
+				->setRoute('/:id')
+				->setConstraints(
+					[
+						'id' => '.{36}'
+					]
+				)
+				->setMayTerminate(false)
+				->setChildRoutes(
+					[
+						'address' => include 'customer/address.php'
+					]
+				)
 				->getConfig()
 		]
 	)

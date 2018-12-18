@@ -1,6 +1,7 @@
 <?php
 namespace Ecommerce\Common;
 
+use Ecommerce\Address\Creator as AddressCreator;
 use Ecommerce\Customer\Creator as CustomerCreator;
 
 class DtoCreatorProvider
@@ -11,11 +12,18 @@ class DtoCreatorProvider
 	private $customerCreator;
 
 	/**
-	 * @param CustomerCreator $customerCreator
+	 * @var AddressCreator
 	 */
-	public function __construct(CustomerCreator $customerCreator)
+	private $addressCreator;
+
+	/**
+	 * @param CustomerCreator $customerCreator
+	 * @param AddressCreator $addressCreator
+	 */
+	public function __construct(CustomerCreator $customerCreator, AddressCreator $addressCreator)
 	{
 		$this->customerCreator = $customerCreator;
+		$this->addressCreator  = $addressCreator;
 	}
 
 	/**
@@ -24,5 +32,13 @@ class DtoCreatorProvider
 	public function getCustomerCreator(): CustomerCreator
 	{
 		return $this->customerCreator;
+	}
+
+	/**
+	 * @return AddressCreator
+	 */
+	public function getAddressCreator(): AddressCreator
+	{
+		return $this->addressCreator;
 	}
 }

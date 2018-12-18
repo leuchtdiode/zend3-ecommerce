@@ -3,6 +3,8 @@ namespace Ecommerce;
 
 use Common\Router\HttpRouteCreator;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
+use Ecommerce\Rest\Action\Plugin\Auth;
+use Ecommerce\Rest\Action\Plugin\AuthFactory;
 use Ramsey\Uuid\Doctrine\UuidType;
 
 return [
@@ -52,6 +54,15 @@ return [
 	'controllers' => [
 		'abstract_factories' => [
 			DefaultFactory::class
+		],
+	],
+
+	'controller_plugins' => [
+		'factories' => [
+			Auth::class => AuthFactory::class,
+		],
+		'aliases' => [
+			'auth' => Auth::class
 		],
 	],
 ];
