@@ -2,6 +2,7 @@
 namespace Ecommerce;
 
 use Common\Router\HttpRouteCreator;
+use Ecommerce\Rest\Action\Customer\Get;
 use Ecommerce\Rest\Action\Customer\Login;
 
 return HttpRouteCreator::create()
@@ -31,6 +32,10 @@ return HttpRouteCreator::create()
 				->setMayTerminate(false)
 				->setChildRoutes(
 					[
+						'get' => HttpRouteCreator::create()
+							->setAction(Get::class)
+							->setMethods(['GET'])
+							->getConfig(),
 						'address' => include 'customer/address.php'
 					]
 				)
