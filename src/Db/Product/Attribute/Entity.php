@@ -10,7 +10,10 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 /**
- * @ORM\Table(name="ecommerce_product_attributes")
+ * @ORM\Table(
+ *     name="ecommerce_product_attributes",
+ *     uniqueConstraints={@ORM\UniqueConstraint(columns={"processableId"})}
+ *	 )
  * @ORM\Entity(repositoryClass="Ecommerce\Db\Product\Repository")
  */
 class Entity
@@ -22,6 +25,13 @@ class Entity
 	 * @ORM\Column(type="uuid");
 	 */
 	private $id;
+
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(type="string", length=150)
+	 */
+	private $processableId;
 
 	/**
 	 * @var string
@@ -68,6 +78,22 @@ class Entity
 	public function setId(UuidInterface $id): void
 	{
 		$this->id = $id;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getProcessableId(): string
+	{
+		return $this->processableId;
+	}
+
+	/**
+	 * @param string $processableId
+	 */
+	public function setProcessableId(string $processableId): void
+	{
+		$this->processableId = $processableId;
 	}
 
 	/**

@@ -35,6 +35,17 @@ class Attribute implements ArrayHydratable
 	 *
 	 * @return string
 	 */
+	public function getProcessableId()
+	{
+		return $this->entity->getProcessableId();
+	}
+
+
+	/**
+	 * @ObjectToArrayHydratorProperty
+	 *
+	 * @return string
+	 */
 	public function getDescription()
 	{
 		return $this->entity->getDescription();
