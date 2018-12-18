@@ -17,6 +17,7 @@ return [
 				->setChildRoutes(
 					[
 						'customer' => include 'routes/customer.php',
+						'product'  => include 'routes/product.php',
 					]
 				)
 				->getConfig()
@@ -37,7 +38,7 @@ return [
 				'cache' => 'array',
 				'paths' => [__DIR__ . '/../src/Db'],
 			],
-			'orm_default'          => [
+			'orm_default'        => [
 				'drivers' => [
 					'Ecommerce' => 'ecommerce_entities',
 				],
@@ -61,7 +62,7 @@ return [
 		'factories' => [
 			Auth::class => AuthFactory::class,
 		],
-		'aliases' => [
+		'aliases'   => [
 			'auth' => Auth::class
 		],
 	],
