@@ -3,6 +3,7 @@ namespace Ecommerce\Transaction;
 
 use Common\Hydration\ArrayHydratable;
 use Ecommerce\Db\Transaction\Entity;
+use Ecommerce\Payment\Method as PaymentMethod;
 use Ecommerce\Transaction\Item\Item;
 use Ramsey\Uuid\UuidInterface;
 
@@ -23,6 +24,13 @@ class Transaction implements ArrayHydratable
 	/**
 	 * @ObjectToArrayHydratorProperty
 	 *
+	 * @var PaymentMethod
+	 */
+	private $paymentMethod;
+
+	/**
+	 * @ObjectToArrayHydratorProperty
+	 *
 	 * @var Item[]
 	 */
 	private $items;
@@ -30,13 +38,15 @@ class Transaction implements ArrayHydratable
 	/**
 	 * @param Entity $entity
 	 * @param Status $status
+	 * @param PaymentMethod $paymentMethod
 	 * @param Item[] $items
 	 */
-	public function __construct(Entity $entity, Status $status, array $items)
+	public function __construct(Entity $entity, Status $status, PaymentMethod $paymentMethod, array $items)
 	{
-		$this->entity = $entity;
-		$this->status = $status;
-		$this->items  = $items;
+		$this->entity        = $entity;
+		$this->status        = $status;
+		$this->paymentMethod = $paymentMethod;
+		$this->items         = $items;
 	}
 
 	/**
@@ -45,6 +55,14 @@ class Transaction implements ArrayHydratable
 	public function getStatus(): Status
 	{
 		return $this->status;
+	}
+
+	/**
+	 * @return PaymentMethod
+	 */
+	public function getPaymentMethod(): PaymentMethod
+	{
+		return $this->paymentMethod;
 	}
 
 	/**
