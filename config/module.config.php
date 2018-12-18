@@ -14,7 +14,7 @@ return [
 				->setMayTerminate(false)
 				->setChildRoutes(
 					[
-						'auth' => include 'routes/auth.php',
+						'customer' => include 'routes/customer.php',
 					]
 				)
 				->getConfig()

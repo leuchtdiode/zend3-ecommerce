@@ -1,5 +1,5 @@
 <?php
-namespace Ecommerce\Rest\Action\Auth;
+namespace Ecommerce\Rest\Action\Customer;
 
 use Common\RequestData\Data;
 use Common\RequestData\PropertyDefinition\Email;

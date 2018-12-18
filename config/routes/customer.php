@@ -2,10 +2,10 @@
 namespace Ecommerce;
 
 use Common\Router\HttpRouteCreator;
-use Ecommerce\Rest\Action\Auth\Login;
+use Ecommerce\Rest\Action\Customer\Login;
 
 return HttpRouteCreator::create()
-	->setRoute('/auth')
+	->setRoute('/customer')
 	->setMayTerminate(false)
 	->setChildRoutes(
 		[
