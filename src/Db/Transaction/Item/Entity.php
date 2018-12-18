@@ -2,6 +2,7 @@
 namespace Ecommerce\Db\Transaction\Item;
 
 use Doctrine\ORM\Mapping as ORM;
+use Ecommerce\Db\Product\Entity as ProductEntity;
 use Ecommerce\Db\Transaction\Entity as TransactionEntity;
 use Exception;
 use Ramsey\Uuid\Uuid;
@@ -36,6 +37,21 @@ class Entity
 	private $tax;
 
 	/**
+	 * @var int
+	 *
+	 * @ORM\Column(type="integer")
+	 */
+	private $amount;
+
+	/**
+	 * @var ProductEntity
+	 *
+	 * @ORM\ManyToOne(targetEntity="Ecommerce\Db\Product\Entity")
+	 * @ORM\JoinColumn(name="productId", referencedColumnName="id", nullable=false)
+	 */
+	private $product;
+
+	/**
 	 * @var TransactionEntity
 	 *
 	 * @ORM\ManyToOne(targetEntity="Ecommerce\Db\Transaction\Entity", inversedBy="items")
@@ -65,6 +81,38 @@ class Entity
 	public function setId(UuidInterface $id): void
 	{
 		$this->id = $id;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getAmount(): int
+	{
+		return $this->amount;
+	}
+
+	/**
+	 * @param int $amount
+	 */
+	public function setAmount(int $amount): void
+	{
+		$this->amount = $amount;
+	}
+
+	/**
+	 * @return ProductEntity
+	 */
+	public function getProduct(): ProductEntity
+	{
+		return $this->product;
+	}
+
+	/**
+	 * @param ProductEntity $product
+	 */
+	public function setProduct(ProductEntity $product): void
+	{
+		$this->product = $product;
 	}
 
 	/**
