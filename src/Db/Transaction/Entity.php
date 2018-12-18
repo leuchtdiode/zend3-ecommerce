@@ -4,6 +4,7 @@ namespace Ecommerce\Db\Transaction;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Ecommerce\Db\Address\Entity as AddressEntity;
 use Ecommerce\Db\Customer\Entity as CustomerEntity;
 use Ecommerce\Db\Transaction\Item\Entity as TransactionItemEntity;
 use Exception;
@@ -59,6 +60,22 @@ class Entity
 	 * @ORM\OneToMany(targetEntity="Ecommerce\Db\Transaction\Item\Entity", mappedBy="transaction")
 	 */
 	private $items;
+
+	/**
+	 * @var AddressEntity
+	 *
+	 * @ORM\ManyToOne(targetEntity="Ecommerce\Db\Address\Entity")
+	 * @ORM\JoinColumn(name="billingAddressId", referencedColumnName="id", nullable=false)
+	 */
+	private $billingAddress;
+
+	/**
+	 * @var AddressEntity
+	 *
+	 * @ORM\ManyToOne(targetEntity="Ecommerce\Db\Address\Entity")
+	 * @ORM\JoinColumn(name="shippingAddressId", referencedColumnName="id", nullable=false)
+	 */
+	private $shippingAddress;
 
 	/**
 	 * @throws Exception
@@ -164,5 +181,37 @@ class Entity
 	public function setItems($items): void
 	{
 		$this->items = $items;
+	}
+
+	/**
+	 * @return AddressEntity
+	 */
+	public function getBillingAddress(): AddressEntity
+	{
+		return $this->billingAddress;
+	}
+
+	/**
+	 * @param AddressEntity $billingAddress
+	 */
+	public function setBillingAddress(AddressEntity $billingAddress): void
+	{
+		$this->billingAddress = $billingAddress;
+	}
+
+	/**
+	 * @return AddressEntity
+	 */
+	public function getShippingAddress(): AddressEntity
+	{
+		return $this->shippingAddress;
+	}
+
+	/**
+	 * @param AddressEntity $shippingAddress
+	 */
+	public function setShippingAddress(AddressEntity $shippingAddress): void
+	{
+		$this->shippingAddress = $shippingAddress;
 	}
 }

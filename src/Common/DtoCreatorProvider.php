@@ -84,6 +84,7 @@ class DtoCreatorProvider
 		$this->productAttributeValueCreator->setProductAttributeCreator($this->productAttributeCreator);
 		$this->productCreator->setProductAttributeValueCreator($this->productAttributeValueCreator);
 		$this->transactionCreator->setTransactionItemCreator($this->transactionItemCreator);
+		$this->transactionCreator->setAddressCreator($this->addressCreator);
 	}
 
 	/**

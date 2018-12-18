@@ -1,11 +1,13 @@
 <?php
 namespace Ecommerce\Transaction;
 
+use Ecommerce\Address\Creator as AddressCreator;
 use Ecommerce\Common\EntityDtoCreator;
 use Ecommerce\Db\Transaction\Entity;
 use Ecommerce\Db\Transaction\Item\Entity as TransactionItemEntity;
 use Ecommerce\Payment\MethodProvider as PaymentMethodProvider;
 use Ecommerce\Transaction\Item\Creator as TransactionItemCreator;
+use Exception;
 
 class Creator implements EntityDtoCreator
 {
@@ -23,6 +25,11 @@ class Creator implements EntityDtoCreator
 	 * @var TransactionItemCreator
 	 */
 	private $transactionItemCreator;
+
+	/**
+	 * @var AddressCreator
+	 */
+	private $addressCreator;
 
 	/**
 	 * @param StatusProvider $statusProvider
@@ -43,8 +50,17 @@ class Creator implements EntityDtoCreator
 	}
 
 	/**
+	 * @param AddressCreator $addressCreator
+	 */
+	public function setAddressCreator(AddressCreator $addressCreator): void
+	{
+		$this->addressCreator = $addressCreator;
+	}
+
+	/**
 	 * @param Entity $entity
 	 * @return Transaction
+	 * @throws Exception
 	 */
 	public function byEntity($entity)
 	{
@@ -58,7 +74,9 @@ class Creator implements EntityDtoCreator
 					return $this->transactionItemCreator->byEntity($entity);
 				},
 				$entity->getItems()->toArray()
-			)
+			),
+			$this->addressCreator->byEntity($entity->getBillingAddress()),
+			$this->addressCreator->byEntity($entity->getShippingAddress())
 		);
 	}
 }
