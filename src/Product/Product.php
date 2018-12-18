@@ -4,6 +4,7 @@ namespace Ecommerce\Product;
 use Common\Hydration\ArrayHydratable;
 use Ecommerce\Common\Price;
 use Ecommerce\Db\Product\Entity;
+use Ecommerce\Product\Attribute\Value\Value;
 use Ramsey\Uuid\UuidInterface;
 
 class Product implements ArrayHydratable
@@ -21,13 +22,30 @@ class Product implements ArrayHydratable
 	private $price;
 
 	/**
+	 * @ObjectToArrayHydratorProperty
+	 *
+	 * @var Value[]
+	 */
+	private $attributeValues;
+
+	/**
 	 * @param Entity $entity
 	 * @param Price $price
+	 * @param Value[] $attributeValues
 	 */
-	public function __construct(Entity $entity, Price $price)
+	public function __construct(Entity $entity, Price $price, array $attributeValues)
 	{
-		$this->entity = $entity;
-		$this->price  = $price;
+		$this->entity          = $entity;
+		$this->price           = $price;
+		$this->attributeValues = $attributeValues;
+	}
+
+	/**
+	 * @return Value[]
+	 */
+	public function getAttributeValues(): array
+	{
+		return $this->attributeValues;
 	}
 
 	/**
