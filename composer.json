@@ -22,6 +22,7 @@
 	"require": {
 		"php": ">=7.1",
 		"ext-openssl": "*",
+		"ext-gettext": "*",
 		"leuchtdiode/zend3-common": "^0.1",
 		"ramsey/uuid-doctrine": "^1.5",
 		"leuchtdiode/zend3-log": "^0.1.3",

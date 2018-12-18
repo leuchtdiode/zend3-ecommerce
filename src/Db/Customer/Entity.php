@@ -4,6 +4,7 @@ namespace Ecommerce\Db\Customer;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Ecommerce\Customer\Status;
 use Ecommerce\Db\Address\Entity as AddressEntity;
 use Exception;
 use Ramsey\Uuid\Uuid;
@@ -106,6 +107,7 @@ class Entity
 	public function __construct()
 	{
 		$this->id          = Uuid::uuid4();
+		$this->status      = Status::PENDING_VERIFICATION;
 		$this->createdDate = new DateTime();
 		$this->addresses   = new ArrayCollection();
 	}

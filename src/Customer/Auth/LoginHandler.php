@@ -46,6 +46,13 @@ class LoginHandler
 			return $result;
 		}
 
+		if (!$customer->getStatus()->isActive())
+		{
+			$result->addError(CustomerNotActiveError::create());
+
+			return $result;
+		}
+
 		if (!password_verify($data->getPassword(), $customer->getPassword()))
 		{
 			$result->addError(PasswordIncorrectError::create());

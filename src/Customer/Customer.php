@@ -13,11 +13,28 @@ class Customer implements ArrayHydratable
 	private $entity;
 
 	/**
-	 * @param Entity $entity
+	 * @ObjectToArrayHydratorProperty
+	 *
+	 * @var Status
 	 */
-	public function __construct(Entity $entity)
+	private $status;
+
+	/**
+	 * @param Entity $entity
+	 * @param Status $status
+	 */
+	public function __construct(Entity $entity, Status $status)
 	{
 		$this->entity = $entity;
+		$this->status = $status;
+	}
+
+	/**
+	 * @return Status
+	 */
+	public function getStatus(): Status
+	{
+		return $this->status;
 	}
 
 	/**
