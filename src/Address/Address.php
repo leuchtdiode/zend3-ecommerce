@@ -1,6 +1,7 @@
 <?php
 namespace Ecommerce\Address;
 
+use Common\Country\Country;
 use Common\Hydration\ArrayHydratable;
 use Ecommerce\Db\Address\Entity;
 use Ramsey\Uuid\UuidInterface;
@@ -13,11 +14,28 @@ class Address implements ArrayHydratable
 	private $entity;
 
 	/**
-	 * @param Entity $entity
+	 * @ObjectToArrayHydratorProperty
+	 *
+	 * @var Country
 	 */
-	public function __construct(Entity $entity)
+	private $country;
+
+	/**
+	 * @param Entity $entity
+	 * @param Country $country
+	 */
+	public function __construct(Entity $entity, Country $country)
 	{
-		$this->entity = $entity;
+		$this->entity  = $entity;
+		$this->country = $country;
+	}
+
+	/**
+	 * @return Country
+	 */
+	public function getCountry()
+	{
+		return $this->country;
 	}
 
 	/**
@@ -58,18 +76,6 @@ class Address implements ArrayHydratable
 	public function getStreet()
 	{
 		return $this->entity->getStreet();
-	}
-
-	/**
-	 * @todo country provider with label
-	 *
-	 * @ObjectToArrayHydratorProperty
-	 *
-	 * @return string
-	 */
-	public function getCountry()
-	{
-		return $this->entity->getCountry();
 	}
 
 	/**
