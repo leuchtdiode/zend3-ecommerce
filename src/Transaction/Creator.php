@@ -9,9 +9,22 @@ use Ecommerce\Transaction\Item\Creator as TransactionItemCreator;
 class Creator implements EntityDtoCreator
 {
 	/**
+	 * @var StatusProvider
+	 */
+	private $statusProvider;
+
+	/**
 	 * @var TransactionItemCreator
 	 */
 	private $transactionItemCreator;
+
+	/**
+	 * @param StatusProvider $statusProvider
+	 */
+	public function __construct(StatusProvider $statusProvider)
+	{
+		$this->statusProvider = $statusProvider;
+	}
 
 	/**
 	 * @param TransactionItemCreator $transactionItemCreator
@@ -29,6 +42,7 @@ class Creator implements EntityDtoCreator
 	{
 		return new Transaction(
 			$entity,
+			$this->statusProvider->byId($entity->getStatus()),
 			array_map(
 				function (TransactionItemEntity $entity)
 				{

@@ -151,17 +151,17 @@ class Entity
 	}
 
 	/**
-	 * @return ArrayCollection
+	 * @return ArrayCollection|TransactionItemEntity
 	 */
-	public function getItems(): ArrayCollection
+	public function getItems()
 	{
 		return $this->items;
 	}
 
 	/**
-	 * @param ArrayCollection $items
+	 * @param ArrayCollection|TransactionItemEntity $items
 	 */
-	public function setItems(ArrayCollection $items): void
+	public function setItems($items): void
 	{
 		$this->items = $items;
 	}

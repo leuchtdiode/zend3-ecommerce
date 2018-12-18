@@ -10,7 +10,7 @@ return HttpRouteCreator::create()
 	->setMayTerminate(false)
 	->setChildRoutes(
 		[
-			'login' => HttpRouteCreator::create()
+			'login'       => HttpRouteCreator::create()
 				->setRoute('/login')
 				->setMayTerminate(false)
 				->setChildRoutes(
@@ -32,11 +32,12 @@ return HttpRouteCreator::create()
 				->setMayTerminate(false)
 				->setChildRoutes(
 					[
-						'get' => HttpRouteCreator::create()
+						'get'         => HttpRouteCreator::create()
 							->setAction(Get::class)
 							->setMethods(['GET'])
 							->getConfig(),
-						'address' => include 'customer/address.php'
+						'address'     => include 'customer/address.php',
+						'transaction' => include 'customer/transaction.php',
 					]
 				)
 				->getConfig()
