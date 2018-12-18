@@ -12,11 +12,18 @@ class LoginHandler
 	private $customerProvider;
 
 	/**
-	 * @param Provider $customerProvider
+	 * @var JwtHandler
 	 */
-	public function __construct(Provider $customerProvider)
+	private $jwtHandler;
+
+	/**
+	 * @param Provider $customerProvider
+	 * @param JwtHandler $jwtHandler
+	 */
+	public function __construct(Provider $customerProvider, JwtHandler $jwtHandler)
 	{
 		$this->customerProvider = $customerProvider;
+		$this->jwtHandler       = $jwtHandler;
 	}
 
 	/**
@@ -46,9 +53,10 @@ class LoginHandler
 			return $result;
 		}
 
-		// TODO generate token
-
 		$result->setSuccess(true);
+		$result->setJwtToken(
+			$this->jwtHandler->generate($customer)
+		);
 		$result->setCustomer($customer);
 
 		return $result;

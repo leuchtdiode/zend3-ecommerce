@@ -1,6 +1,7 @@
 <?php
 namespace Ecommerce\Rest\Action\Customer;
 
+use Common\Hydration\ObjectToArrayHydrator;
 use Ecommerce\Customer\Auth\LoginData as CustomerLoginData;
 use Ecommerce\Customer\Auth\LoginHandler;
 use Ecommerce\Rest\Action\Base;
@@ -56,6 +57,11 @@ class Login extends Base
 		{
 			return Response::is()
 				->successful()
+				->data(ObjectToArrayHydrator::hydrate(
+					LoginSuccessData::create()
+						->setJwtToken($loginResult->getJwtToken())
+						->setCustomer($loginResult->getCustomer())
+				))
 				->dispatch();
 		}
 

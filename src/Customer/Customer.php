@@ -3,6 +3,7 @@ namespace Ecommerce\Customer;
 
 use Common\Hydration\ArrayHydratable;
 use Ecommerce\Db\Customer\Entity;
+use Ramsey\Uuid\UuidInterface;
 
 class Customer implements ArrayHydratable
 {
@@ -22,7 +23,7 @@ class Customer implements ArrayHydratable
 	/**
 	 * @ObjectToArrayHydratorProperty
 	 *
-	 * @return string
+	 * @return UuidInterface
 	 */
 	public function getId()
 	{

@@ -28,6 +28,19 @@ class Provider
 	}
 
 	/**
+	 * @param $id
+	 * @return Customer|null
+	 */
+	public function byId($id)
+	{
+		$entity = $this->repository->find($id);
+
+		return $entity
+			? $this->createDto($entity)
+			: null;
+	}
+
+	/**
 	 * @param $email
 	 * @return Customer|null
 	 */
