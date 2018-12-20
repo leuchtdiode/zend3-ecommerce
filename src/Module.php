@@ -24,7 +24,8 @@ class Module
 			->getApplication()
 			->getEventManager();
 
-		$eventManager->attach(MvcEvent::EVENT_DISPATCH,
+		$eventManager->attach(
+			MvcEvent::EVENT_DISPATCH,
 			function () use ($e)
 			{
 				if (!StringUtil::startsWith(
