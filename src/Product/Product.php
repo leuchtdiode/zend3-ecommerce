@@ -76,6 +76,16 @@ class Product implements ArrayHydratable
 	/**
 	 * @ObjectToArrayHydratorProperty
 	 *
+	 * @return bool
+	 */
+	public function isInStock()
+	{
+		return $this->getStock() > 0;
+	}
+
+	/**
+	 * @ObjectToArrayHydratorProperty
+	 *
 	 * @return UuidInterface
 	 */
 	public function getId()
