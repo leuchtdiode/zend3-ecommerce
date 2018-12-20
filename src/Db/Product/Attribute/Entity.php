@@ -41,6 +41,13 @@ class Entity
 	private $description;
 
 	/**
+	 * @var string|null
+	 *
+	 * @ORM\Column(type="string", length=255, nullable=true)
+	 */
+	private $unit;
+
+	/**
 	 * @var DateTime
 	 *
 	 * @ORM\Column(type="datetime");
@@ -110,6 +117,22 @@ class Entity
 	public function setDescription(string $description): void
 	{
 		$this->description = $description;
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getUnit(): ?string
+	{
+		return $this->unit;
+	}
+
+	/**
+	 * @param string|null $unit
+	 */
+	public function setUnit(?string $unit): void
+	{
+		$this->unit = $unit;
 	}
 
 	/**
