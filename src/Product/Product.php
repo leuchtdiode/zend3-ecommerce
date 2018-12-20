@@ -17,6 +17,13 @@ class Product implements ArrayHydratable
 	/**
 	 * @ObjectToArrayHydratorProperty
 	 *
+	 * @var Status
+	 */
+	private $status;
+
+	/**
+	 * @ObjectToArrayHydratorProperty
+	 *
 	 * @var Price
 	 */
 	private $price;
@@ -30,14 +37,24 @@ class Product implements ArrayHydratable
 
 	/**
 	 * @param Entity $entity
+	 * @param Status $status
 	 * @param Price $price
 	 * @param Value[] $attributeValues
 	 */
-	public function __construct(Entity $entity, Price $price, array $attributeValues)
+	public function __construct(Entity $entity, Status $status, Price $price, array $attributeValues)
 	{
 		$this->entity          = $entity;
+		$this->status          = $status;
 		$this->price           = $price;
 		$this->attributeValues = $attributeValues;
+	}
+
+	/**
+	 * @return Status
+	 */
+	public function getStatus(): Status
+	{
+		return $this->status;
 	}
 
 	/**
@@ -84,6 +101,16 @@ class Product implements ArrayHydratable
 	public function getDescription()
 	{
 		return $this->entity->getDescription();
+	}
+
+	/**
+	 * @ObjectToArrayHydratorProperty
+	 *
+	 * @return integer
+	 */
+	public function getStock()
+	{
+		return $this->entity->getStock();
 	}
 
 	/**
