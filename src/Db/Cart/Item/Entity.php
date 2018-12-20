@@ -4,6 +4,7 @@ namespace Ecommerce\Db\Cart\Item;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Ecommerce\Db\Cart\Entity as CartEntity;
+use Ecommerce\Db\Product\Entity as ProductEntity;
 use Exception;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -35,6 +36,14 @@ class Entity
 	 * @ORM\Column(type="datetime");
 	 */
 	private $createdDate;
+
+	/**
+	 * @var ProductEntity
+	 *
+	 * @ORM\ManyToOne(targetEntity="Ecommerce\Db\Product\Entity")
+	 * @ORM\JoinColumn(name="productId", referencedColumnName="id", nullable=false)
+	 */
+	private $product;
 
 	/**
 	 * @var CartEntity
@@ -99,6 +108,22 @@ class Entity
 	public function setCreatedDate(DateTime $createdDate): void
 	{
 		$this->createdDate = $createdDate;
+	}
+
+	/**
+	 * @return ProductEntity
+	 */
+	public function getProduct(): ProductEntity
+	{
+		return $this->product;
+	}
+
+	/**
+	 * @param ProductEntity $product
+	 */
+	public function setProduct(ProductEntity $product): void
+	{
+		$this->product = $product;
 	}
 
 	/**

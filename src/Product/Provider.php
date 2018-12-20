@@ -30,6 +30,17 @@ class Provider
 	}
 
 	/**
+	 * @param string $id
+	 * @return Product|null
+	 */
+	public function byId($id)
+	{
+		return ($entity = $this->repository->find($id))
+			? $this->createDto($entity)
+			: null;
+	}
+
+	/**
 	 * @param FilterChain $filterChain
 	 * @param OrderChain|null $orderChain
 	 * @param int $offset

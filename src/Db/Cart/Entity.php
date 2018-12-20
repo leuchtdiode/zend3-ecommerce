@@ -41,7 +41,7 @@ class Entity
 	/**
 	 * @var ArrayCollection|CartItemEntity[]
 	 *
-	 * @ORM\OneToMany(targetEntity="Ecommerce\Db\Cart\Item\Entity", mappedBy="cart")
+	 * @ORM\OneToMany(targetEntity="Ecommerce\Db\Cart\Item\Entity", mappedBy="cart", cascade={"persist"})
 	 */
 	private $items;
 
