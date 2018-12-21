@@ -8,7 +8,21 @@ return HttpRouteCreator::create()
 	->setMayTerminate(false)
 	->setChildRoutes(
 		[
-			'item' => include 'cart/item.php',
+			'item'        => include 'cart/item.php',
+			'single-item' => HttpRouteCreator::create()
+				->setRoute('/:cartId')
+				->setConstraints(
+					[
+						'cartId' => '.{36}',
+					]
+				)
+				->setMayTerminate(false)
+				->setChildRoutes(
+					[
+						'item' => include 'cart/item.php',
+					]
+				)
+				->getConfig(),
 		]
 	)
 	->getConfig();

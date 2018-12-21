@@ -2,12 +2,13 @@
 namespace Ecommerce\Product;
 
 use Common\Hydration\ArrayHydratable;
+use Ecommerce\Common\Equals;
 use Ecommerce\Common\Price;
 use Ecommerce\Db\Product\Entity;
 use Ecommerce\Product\Attribute\Value\Value;
 use Ramsey\Uuid\UuidInterface;
 
-class Product implements ArrayHydratable
+class Product implements ArrayHydratable, Equals
 {
 	/**
 	 * @var Entity
@@ -47,6 +48,24 @@ class Product implements ArrayHydratable
 		$this->status          = $status;
 		$this->price           = $price;
 		$this->attributeValues = $attributeValues;
+	}
+
+	/**
+	 * @param Product $toCompare
+	 * @return bool
+	 */
+	public function equals($toCompare)
+	{
+		return $this->getId()->compareTo($toCompare->getId()) === 0;
+	}
+
+	/**
+	 * @param $quantity
+	 * @return bool
+	 */
+	public function hasEnoughStock($quantity)
+	{
+		return $this->isInStock() && $quantity <= $this->getStock();
 	}
 
 	/**

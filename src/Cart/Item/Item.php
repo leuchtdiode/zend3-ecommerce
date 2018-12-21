@@ -3,6 +3,8 @@ namespace Ecommerce\Cart\Item;
 
 use Common\Hydration\ArrayHydratable;
 use Ecommerce\Db\Cart\Item\Entity;
+use Ecommerce\Product\Product;
+use Ramsey\Uuid\UuidInterface;
 
 class Item implements ArrayHydratable
 {
@@ -12,11 +14,48 @@ class Item implements ArrayHydratable
 	private $entity;
 
 	/**
-	 * @param Entity $entity
+	 * @var Product
 	 */
-	public function __construct(Entity $entity)
+	private $product;
+
+	/**
+	 * @param Entity $entity
+	 * @param Product $product
+	 */
+	public function __construct(Entity $entity, Product $product)
 	{
-		$this->entity = $entity;
+		$this->entity  = $entity;
+		$this->product = $product;
+	}
+
+	/**
+	 * @ObjectToArrayHydratorProperty
+	 *
+	 * @return Product
+	 */
+	public function getProduct(): Product
+	{
+		return $this->product;
+	}
+
+	/**
+	 * @ObjectToArrayHydratorProperty
+	 *
+	 * @return UuidInterface
+	 */
+	public function getId()
+	{
+		return $this->entity->getId();
+	}
+
+	/**
+	 * @ObjectToArrayHydratorProperty
+	 *
+	 * @return int
+	 */
+	public function getQuantity()
+	{
+		return $this->entity->getQuantity();
 	}
 
 	/**
