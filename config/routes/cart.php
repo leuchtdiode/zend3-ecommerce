@@ -2,6 +2,7 @@
 namespace Ecommerce;
 
 use Common\Router\HttpRouteCreator;
+use Ecommerce\Rest\Action\Cart\Get;
 
 return HttpRouteCreator::create()
 	->setRoute('/cart')
@@ -20,6 +21,10 @@ return HttpRouteCreator::create()
 				->setChildRoutes(
 					[
 						'item' => include 'cart/item.php',
+						'get' => HttpRouteCreator::create()
+							->setMethods(['GET'])
+							->setAction(Get::class)
+							->getConfig()
 					]
 				)
 				->getConfig(),
