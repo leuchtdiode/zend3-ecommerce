@@ -3,6 +3,7 @@ namespace Ecommerce\Cart;
 
 use Common\Hydration\ArrayHydratable;
 use Ecommerce\Cart\Item\Item;
+use Ecommerce\Common\Price;
 use Ecommerce\Db\Cart\Entity;
 use Ramsey\Uuid\UuidInterface;
 
@@ -21,13 +22,30 @@ class Cart implements ArrayHydratable
 	private $items;
 
 	/**
+	 * @ObjectToArrayHydratorProperty
+	 *
+	 * @var Price
+	 */
+	private $totalPrice;
+
+	/**
 	 * @param Entity $entity
 	 * @param Item[] $items
+	 * @param Price $totalPrice
 	 */
-	public function __construct(Entity $entity, array $items)
+	public function __construct(Entity $entity, array $items, Price $totalPrice)
 	{
-		$this->entity = $entity;
-		$this->items  = $items;
+		$this->entity     = $entity;
+		$this->items      = $items;
+		$this->totalPrice = $totalPrice;
+	}
+
+	/**
+	 * @return Price
+	 */
+	public function getTotalPrice(): Price
+	{
+		return $this->totalPrice;
 	}
 
 	/**
