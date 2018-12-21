@@ -31,6 +31,6 @@ class ProductHasNotEnoughStockError extends Error
 	 */
 	public function getMessage()
 	{
-		return Translator::translate('Produkt hat nicht genügend lagernd');
+		return Translator::translate('Nicht genügend lagernd');
 	}
 }

@@ -87,6 +87,7 @@ class Add extends Base implements LoginExempt
 		{
 			return Response::is()
 				->unsuccessful()
+				->errors($addResult->getErrors())
 				->dispatch();
 		}
 
