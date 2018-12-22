@@ -4,6 +4,7 @@ namespace Ecommerce;
 use Common\Router\HttpRouteCreator;
 use Ecommerce\Rest\Action\Customer\Get;
 use Ecommerce\Rest\Action\Customer\Login;
+use Ecommerce\Rest\Action\Customer\Register;
 
 return HttpRouteCreator::create()
 	->setRoute('/customer')
@@ -17,8 +18,20 @@ return HttpRouteCreator::create()
 					[
 						HttpRouteCreator::create()
 							->setAction(Login::class)
-							->setMethods(['POST'])
-							->getConfig()
+							->setMethods([ 'POST' ])
+							->getConfig(),
+					]
+				)
+				->getConfig(),
+			'register'    => HttpRouteCreator::create()
+				->setRoute('/register')
+				->setMayTerminate(false)
+				->setChildRoutes(
+					[
+						HttpRouteCreator::create()
+							->setAction(Register::class)
+							->setMethods([ 'POST' ])
+							->getConfig(),
 					]
 				)
 				->getConfig(),
@@ -26,7 +39,7 @@ return HttpRouteCreator::create()
 				->setRoute('/:id')
 				->setConstraints(
 					[
-						'id' => '.{36}'
+						'id' => '.{36}',
 					]
 				)
 				->setMayTerminate(false)
@@ -34,13 +47,13 @@ return HttpRouteCreator::create()
 					[
 						'get'         => HttpRouteCreator::create()
 							->setAction(Get::class)
-							->setMethods(['GET'])
+							->setMethods([ 'GET' ])
 							->getConfig(),
 						'address'     => include 'customer/address.php',
 						'transaction' => include 'customer/transaction.php',
 					]
 				)
-				->getConfig()
+				->getConfig(),
 		]
 	)
 	->getConfig();
