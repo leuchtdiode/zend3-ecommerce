@@ -3,6 +3,7 @@ namespace Ecommerce;
 
 use Common\Router\HttpRouteCreator;
 use Ecommerce\Rest\Action\Cart\Get;
+use Ecommerce\Rest\Action\Cart\Checkout;
 
 return HttpRouteCreator::create()
 	->setRoute('/cart')
@@ -24,7 +25,11 @@ return HttpRouteCreator::create()
 						'get' => HttpRouteCreator::create()
 							->setMethods(['GET'])
 							->setAction(Get::class)
-							->getConfig()
+							->getConfig(),
+						'checkout' => HttpRouteCreator::create()
+							->setRoute('/checkout')
+							->setAction(Checkout::class)
+							->getConfig(),
 					]
 				)
 				->getConfig(),

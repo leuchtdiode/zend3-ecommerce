@@ -65,6 +65,15 @@ abstract class Base extends AbstractRestfulController
 	}
 
 	/**
+	 * @param string $customerId
+	 * @return bool
+	 */
+	protected function customerCheck($customerId)
+	{
+		return $this->customer && $this->customer->getId()->toString() === $customerId;
+	}
+
+	/**
 	 * @return mixed
 	 */
 	protected function forbidden()
