@@ -21,13 +21,22 @@ class Customer implements ArrayHydratable
 	private $status;
 
 	/**
+	 * @ObjectToArrayHydratorProperty
+	 *
+	 * @var Salutation
+	 */
+	private $salutation;
+
+	/**
 	 * @param Entity $entity
 	 * @param Status $status
+	 * @param Salutation $salutation
 	 */
-	public function __construct(Entity $entity, Status $status)
+	public function __construct(Entity $entity, Status $status, Salutation $salutation)
 	{
-		$this->entity = $entity;
-		$this->status = $status;
+		$this->entity     = $entity;
+		$this->status     = $status;
+		$this->salutation = $salutation;
 	}
 
 	/**
@@ -46,6 +55,14 @@ class Customer implements ArrayHydratable
 	public function getStatus(): Status
 	{
 		return $this->status;
+	}
+
+	/**
+	 * @return Salutation
+	 */
+	public function getSalutation(): Salutation
+	{
+		return $this->salutation;
 	}
 
 	/**

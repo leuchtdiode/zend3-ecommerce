@@ -12,11 +12,18 @@ class Creator implements EntityDtoCreator
 	private $statusProvider;
 
 	/**
-	 * @param StatusProvider $statusProvider
+	 * @var SalutationProvider
 	 */
-	public function __construct(StatusProvider $statusProvider)
+	private $salutationProvider;
+
+	/**
+	 * @param StatusProvider $statusProvider
+	 * @param SalutationProvider $salutationProvider
+	 */
+	public function __construct(StatusProvider $statusProvider, SalutationProvider $salutationProvider)
 	{
-		$this->statusProvider = $statusProvider;
+		$this->statusProvider     = $statusProvider;
+		$this->salutationProvider = $salutationProvider;
 	}
 
 	/**
@@ -27,7 +34,8 @@ class Creator implements EntityDtoCreator
 	{
 		return new Customer(
 			$entity,
-			$this->statusProvider->byId($entity->getStatus())
+			$this->statusProvider->byId($entity->getStatus()),
+			$this->salutationProvider->byId($entity->getSalutation())
 		);
 	}
 }

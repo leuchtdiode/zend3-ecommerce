@@ -1,9 +1,10 @@
 <?php
 namespace Ecommerce\Customer;
 
+use Common\Hydration\ArrayHydratable;
 use Ecommerce\Common\IdLabelObject;
 
-class Salutation
+class Salutation implements ArrayHydratable
 {
 	const MALE   = 'male';
 	const FEMALE = 'female';
