@@ -12,7 +12,7 @@ class AddOrModifyData extends Data
 	const ZIP              = 'zip';
 	const CITY             = 'city';
 	const STREET           = 'street';
-	const STREET_EXTRA     = 'streetExtra';
+	const EXTRA            = 'extra';
 	const DEFAULT_BILLING  = 'defaultBilling';
 	const DEFAULT_SHIPPING = 'defaultShipping';
 
@@ -40,7 +40,7 @@ class AddOrModifyData extends Data
 				->setLabel(_('Straße'))
 				->setRequired(true),
 			Text::create()
-				->setName(self::STREET_EXTRA)
+				->setName(self::EXTRA)
 				->setLabel(_('Straße (Zusatz)'))
 				->setRequired(false),
 			Boolean::create()

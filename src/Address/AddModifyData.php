@@ -38,7 +38,7 @@ class AddModifyData
 	/**
 	 * @var string|null
 	 */
-	private $streetExtra;
+	private $extra;
 
 	/**
 	 * @var bool
@@ -169,18 +169,18 @@ class AddModifyData
 	/**
 	 * @return string|null
 	 */
-	public function getStreetExtra(): ?string
+	public function getExtra(): ?string
 	{
-		return $this->streetExtra;
+		return $this->extra;
 	}
 
 	/**
-	 * @param string|null $streetExtra
+	 * @param string|null $extra
 	 * @return AddModifyData
 	 */
-	public function setStreetExtra(?string $streetExtra): AddModifyData
+	public function setExtra(?string $extra): AddModifyData
 	{
-		$this->streetExtra = $streetExtra;
+		$this->extra = $extra;
 		return $this;
 	}
 

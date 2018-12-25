@@ -48,7 +48,7 @@ class AddModifyHandler
 			$entity->setCity($data->getCity());
 			$entity->setCountry($data->getCountry());
 			$entity->setStreet($data->getStreet());
-			$entity->setExtra($data->getStreetExtra());
+			$entity->setExtra($data->getExtra());
 			$entity->setDefaultBilling($data->isDefaultBilling());
 			$entity->setDefaultShipping($data->isDefaultShipping());
 

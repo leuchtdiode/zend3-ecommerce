@@ -104,9 +104,9 @@ class AddOrModify extends Base
 						->get(AddOrModifyData::STREET)
 						->getValue()
 				)
-				->setStreetExtra(
+				->setExtra(
 					$values
-						->get(AddOrModifyData::STREET_EXTRA)
+						->get(AddOrModifyData::EXTRA)
 						->getValue()
 				)
 				->setDefaultBilling(
