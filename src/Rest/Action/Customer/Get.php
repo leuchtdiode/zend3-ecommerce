@@ -27,11 +27,9 @@ class Get extends Base
 	 */
 	public function executeAction()
 	{
-		$customer = $this->getCustomer();
-
 		$customerId = $this->params()->fromRoute('id');
 
-		if ($customerId !== $customer->getId()->toString())
+		if (!$this->customerCheck($customerId))
 		{
 			return $this->forbidden();
 		}
@@ -41,7 +39,7 @@ class Get extends Base
 			->data(
 				ObjectToArrayHydrator::hydrate(
 					GetSuccessData::create()
-						->setCustomer($customer)
+						->setCustomer($this->getCustomer())
 				)
 			)
 			->dispatch();

@@ -3,6 +3,7 @@ namespace Ecommerce;
 
 use Common\Router\HttpRouteCreator;
 use Ecommerce\Rest\Action\Customer\Get;
+use Ecommerce\Rest\Action\Customer\Modify;
 use Ecommerce\Rest\Action\Customer\Login;
 use Ecommerce\Rest\Action\Customer\Register;
 use Ecommerce\Rest\Action\Customer\Activate;
@@ -49,6 +50,10 @@ return HttpRouteCreator::create()
 						'get'         => HttpRouteCreator::create()
 							->setAction(Get::class)
 							->setMethods([ 'GET' ])
+							->getConfig(),
+						'modify'      => HttpRouteCreator::create()
+							->setAction(Modify::class)
+							->setMethods([ 'PUT' ])
 							->getConfig(),
 						'activate'    => HttpRouteCreator::create()
 							->setRoute('/activate')
