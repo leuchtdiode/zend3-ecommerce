@@ -2,6 +2,7 @@
 namespace Ecommerce;
 
 use Common\Util\StringUtil;
+use Zend\Http\Request;
 use Zend\Mvc\MvcEvent;
 use Zend\View\Model\JsonModel;
 
@@ -28,12 +29,9 @@ class Module
 			MvcEvent::EVENT_DISPATCH,
 			function () use ($e)
 			{
-				if (!StringUtil::startsWith(
-					$e
-						->getRequest()
-						->getRequestUri(),
-					'/ecommerce')
-				)
+				$request = $e->getRequest();
+
+				if (!$request instanceof Request || !StringUtil::startsWith($request->getRequestUri(), '/ecommerce'))
 				{
 					return;
 				}

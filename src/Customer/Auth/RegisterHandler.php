@@ -1,6 +1,7 @@
 <?php
 namespace Ecommerce\Customer\Auth;
 
+use Ecommerce\Customer\Creator;
 use Ecommerce\Customer\CustomerWithEmailAlreadyExistsError;
 use Ecommerce\Customer\Provider;
 use Ecommerce\Db\Customer\Entity;
@@ -16,6 +17,11 @@ class RegisterHandler
 	private $customerProvider;
 
 	/**
+	 * @var Creator
+	 */
+	private $customerCreator;
+
+	/**
 	 * @var Saver
 	 */
 	private $entitySaver;
@@ -26,15 +32,30 @@ class RegisterHandler
 	private $passwordHandler;
 
 	/**
+	 * @var ActivateMailSender
+	 */
+	private $activateMailSender;
+
+	/**
 	 * @param Provider $customerProvider
+	 * @param Creator $customerCreator
 	 * @param Saver $entitySaver
 	 * @param PasswordHandler $passwordHandler
+	 * @param ActivateMailSender $activateMailSender
 	 */
-	public function __construct(Provider $customerProvider, Saver $entitySaver, PasswordHandler $passwordHandler)
+	public function __construct(
+		Provider $customerProvider,
+		Creator $customerCreator,
+		Saver $entitySaver,
+		PasswordHandler $passwordHandler,
+		ActivateMailSender $activateMailSender
+	)
 	{
 		$this->customerProvider = $customerProvider;
-		$this->entitySaver      = $entitySaver;
-		$this->passwordHandler  = $passwordHandler;
+		$this->customerCreator = $customerCreator;
+		$this->entitySaver = $entitySaver;
+		$this->passwordHandler = $passwordHandler;
+		$this->activateMailSender = $activateMailSender;
 	}
 
 	/**
@@ -78,9 +99,13 @@ class RegisterHandler
 
 			$this->entitySaver->save($entity);
 
-			// TODO send activate mail link
+			$customer = $this->customerCreator->byEntity($entity);
 
-			$result->setSuccess(true);
+			if ($this->activateMailSender->send($customer))
+			{
+				$result->setSuccess(true);
+				$result->setCustomer($customer);
+			}
 		}
 		catch (Exception $ex)
 		{

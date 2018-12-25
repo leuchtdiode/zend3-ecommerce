@@ -2,6 +2,7 @@
 namespace Ecommerce\Customer;
 
 use Common\Hydration\ArrayHydratable;
+use DateTime;
 use Ecommerce\Db\Customer\Entity;
 use Ramsey\Uuid\UuidInterface;
 
@@ -27,6 +28,16 @@ class Customer implements ArrayHydratable
 	{
 		$this->entity = $entity;
 		$this->status = $status;
+	}
+
+	/**
+	 * @ObjectToArrayHydratorProperty
+	 *
+	 * @return string
+	 */
+	public function getName()
+	{
+		return $this->getFirstName() . ' ' . $this->getLastName();
 	}
 
 	/**
@@ -113,6 +124,16 @@ class Customer implements ArrayHydratable
 	public function getTaxNumber()
 	{
 		return $this->entity->getTaxNumber();
+	}
+
+	/**
+	 * @ObjectToArrayHydratorProperty
+	 *
+	 * @return DateTime
+	 */
+	public function getCreatedDate()
+	{
+		return $this->entity->getCreatedDate();
 	}
 
 	/**
