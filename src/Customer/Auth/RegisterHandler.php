@@ -1,7 +1,7 @@
 <?php
 namespace Ecommerce\Customer\Auth;
 
-use Ecommerce\Customer\Creator;
+use Ecommerce\Common\DtoCreatorProvider;
 use Ecommerce\Customer\CustomerWithEmailAlreadyExistsError;
 use Ecommerce\Customer\Provider;
 use Ecommerce\Db\Customer\Entity;
@@ -17,9 +17,9 @@ class RegisterHandler
 	private $customerProvider;
 
 	/**
-	 * @var Creator
+	 * @var DtoCreatorProvider
 	 */
-	private $customerCreator;
+	private $dtoCreatorProvider;
 
 	/**
 	 * @var Saver
@@ -38,23 +38,23 @@ class RegisterHandler
 
 	/**
 	 * @param Provider $customerProvider
-	 * @param Creator $customerCreator
+	 * @param DtoCreatorProvider $dtoCreatorProvider
 	 * @param Saver $entitySaver
 	 * @param PasswordHandler $passwordHandler
 	 * @param ActivateMailSender $activateMailSender
 	 */
 	public function __construct(
 		Provider $customerProvider,
-		Creator $customerCreator,
+		DtoCreatorProvider $dtoCreatorProvider,
 		Saver $entitySaver,
 		PasswordHandler $passwordHandler,
 		ActivateMailSender $activateMailSender
 	)
 	{
-		$this->customerProvider = $customerProvider;
-		$this->customerCreator = $customerCreator;
-		$this->entitySaver = $entitySaver;
-		$this->passwordHandler = $passwordHandler;
+		$this->customerProvider   = $customerProvider;
+		$this->dtoCreatorProvider = $dtoCreatorProvider;
+		$this->entitySaver        = $entitySaver;
+		$this->passwordHandler    = $passwordHandler;
 		$this->activateMailSender = $activateMailSender;
 	}
 
@@ -99,7 +99,9 @@ class RegisterHandler
 
 			$this->entitySaver->save($entity);
 
-			$customer = $this->customerCreator->byEntity($entity);
+			$customer = $this->dtoCreatorProvider
+				->getCustomerCreator()
+				->byEntity($entity);
 
 			if ($this->activateMailSender->send($customer))
 			{
