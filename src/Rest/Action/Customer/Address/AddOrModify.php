@@ -2,32 +2,44 @@
 namespace Ecommerce\Rest\Action\Customer\Address;
 
 use Common\Hydration\ObjectToArrayHydrator;
-use Ecommerce\Address\Adder;
-use Ecommerce\Address\AddData as AddressAddData;
+use Ecommerce\Address\AddModifyHandler;
+use Ecommerce\Address\AddModifyData as AddressAddModifyData;
+use Ecommerce\Address\Provider as AddressProvider;
 use Ecommerce\Rest\Action\Base;
 use Ecommerce\Rest\Action\Response;
 use Exception;
 
-class Add extends Base
+class AddOrModify extends Base
 {
 	/**
-	 * @var AddData
+	 * @var AddOrModifyData
 	 */
 	private $data;
 
 	/**
-	 * @var Adder
+	 * @var AddModifyHandler
 	 */
-	private $adder;
+	private $addModifyHandler;
 
 	/**
-	 * @param AddData $data
-	 * @param Adder $adder
+	 * @var AddressProvider
 	 */
-	public function __construct(AddData $data, Adder $adder)
+	private $addressProvider;
+
+	/**
+	 * @param AddOrModifyData $data
+	 * @param AddModifyHandler $addModifyHandler
+	 * @param AddressProvider $addressProvider
+	 */
+	public function __construct(
+		AddOrModifyData $data,
+		AddModifyHandler $addModifyHandler,
+		AddressProvider $addressProvider
+	)
 	{
-		$this->data  = $data;
-		$this->adder = $adder;
+		$this->data = $data;
+		$this->addModifyHandler = $addModifyHandler;
+		$this->addressProvider = $addressProvider;
 	}
 
 	/**
@@ -45,6 +57,17 @@ class Add extends Base
 			return $this->forbidden();
 		}
 
+		$addressId = $this
+			->params()
+			->fromRoute('addressId');
+
+		$address = null;
+
+		if ($addressId)
+		{
+			$address = $this->addressProvider->byId($addressId);
+		}
+
 		$values = $this->data
 			->setRequest($this->getRequest())
 			->getValues();
@@ -57,42 +80,43 @@ class Add extends Base
 				->dispatch();
 		}
 
-		$result = $this->adder->add(
-			AddressAddData::create()
+		$result = $this->addModifyHandler->addOrModify(
+			AddressAddModifyData::create()
+				->setAddress($address)
 				->setCustomer($this->getCustomer())
 				->setCountry(
 					$values
-						->get(AddData::COUNTRY)
+						->get(AddOrModifyData::COUNTRY)
 						->getValue()
 				)
 				->setZip(
 					$values
-						->get(AddData::ZIP)
+						->get(AddOrModifyData::ZIP)
 						->getValue()
 				)
 				->setCity(
 					$values
-						->get(AddData::CITY)
+						->get(AddOrModifyData::CITY)
 						->getValue()
 				)
 				->setStreet(
 					$values
-						->get(AddData::STREET)
+						->get(AddOrModifyData::STREET)
 						->getValue()
 				)
 				->setStreetExtra(
 					$values
-						->get(AddData::STREET_EXTRA)
+						->get(AddOrModifyData::STREET_EXTRA)
 						->getValue()
 				)
 				->setDefaultBilling(
 					$values
-						->get(AddData::DEFAULT_BILLING)
+						->get(AddOrModifyData::DEFAULT_BILLING)
 						->getValue() ?? false
 				)
 				->setDefaultShipping(
 					$values
-						->get(AddData::DEFAULT_SHIPPING)
+						->get(AddOrModifyData::DEFAULT_SHIPPING)
 						->getValue() ?? false
 				)
 		);
@@ -109,7 +133,7 @@ class Add extends Base
 			->successful()
 			->data(
 				ObjectToArrayHydrator::hydrate(
-					AddSuccessData::create()
+					AddOrModifySuccessData::create()
 						->setAddress($result->getAddress())
 				)
 			)

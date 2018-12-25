@@ -3,11 +3,11 @@ namespace Ecommerce\Address;
 
 use Ecommerce\Common\DtoCreatorProvider;
 use Ecommerce\Db\Address\Entity;
-use Exception;
 use Ecommerce\Db\Address\Saver;
+use Exception;
 use Log\Log;
 
-class Adder
+class AddModifyHandler
 {
 	/**
 	 * @var Saver
@@ -30,17 +30,19 @@ class Adder
 	}
 
 	/**
-	 * @param AddData $data
-	 * @return AddResult
+	 * @param AddModifyData $data
+	 * @return AddModifyResult
 	 */
-	public function add(AddData $data)
+	public function addOrModify(AddModifyData $data)
 	{
-		$result = new AddResult();
+		$result = new AddModifyResult();
 		$result->setSuccess(false);
 
 		try
 		{
-			$entity = new Entity();
+			$entity = $data->getAddress()
+				? $data->getAddress()->getEntity()
+				: new Entity();
 			$entity->setCustomer($data->getCustomer()->getEntity());
 			$entity->setZip($data->getZip());
 			$entity->setCity($data->getCity());

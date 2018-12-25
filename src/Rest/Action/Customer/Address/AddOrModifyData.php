@@ -6,7 +6,7 @@ use Common\RequestData\PropertyDefinition\Boolean;
 use Common\RequestData\PropertyDefinition\PropertyDefinition;
 use Common\RequestData\PropertyDefinition\Text;
 
-class AddData extends Data
+class AddOrModifyData extends Data
 {
 	const COUNTRY          = 'country';
 	const ZIP              = 'zip';

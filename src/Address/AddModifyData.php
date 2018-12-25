@@ -3,8 +3,13 @@ namespace Ecommerce\Address;
 
 use Ecommerce\Customer\Customer;
 
-class AddData
+class AddModifyData
 {
+	/**
+	 * @var Address|null
+	 */
+	private $address;
+
 	/**
 	 * @var Customer
 	 */
@@ -46,11 +51,29 @@ class AddData
 	private $defaultShipping;
 
 	/**
-	 * @return AddData
+	 * @return AddModifyData
 	 */
 	public static function create()
 	{
 		return new self();
+	}
+
+	/**
+	 * @return Address|null
+	 */
+	public function getAddress(): ?Address
+	{
+		return $this->address;
+	}
+
+	/**
+	 * @param Address|null $address
+	 * @return AddModifyData
+	 */
+	public function setAddress(?Address $address): AddModifyData
+	{
+		$this->address = $address;
+		return $this;
 	}
 
 	/**
@@ -63,9 +86,9 @@ class AddData
 
 	/**
 	 * @param Customer $customer
-	 * @return AddData
+	 * @return AddModifyData
 	 */
-	public function setCustomer(Customer $customer): AddData
+	public function setCustomer(Customer $customer): AddModifyData
 	{
 		$this->customer = $customer;
 		return $this;
@@ -81,9 +104,9 @@ class AddData
 
 	/**
 	 * @param string $country
-	 * @return AddData
+	 * @return AddModifyData
 	 */
-	public function setCountry(string $country): AddData
+	public function setCountry(string $country): AddModifyData
 	{
 		$this->country = $country;
 		return $this;
@@ -99,9 +122,9 @@ class AddData
 
 	/**
 	 * @param string $zip
-	 * @return AddData
+	 * @return AddModifyData
 	 */
-	public function setZip(string $zip): AddData
+	public function setZip(string $zip): AddModifyData
 	{
 		$this->zip = $zip;
 		return $this;
@@ -117,9 +140,9 @@ class AddData
 
 	/**
 	 * @param string $city
-	 * @return AddData
+	 * @return AddModifyData
 	 */
-	public function setCity(string $city): AddData
+	public function setCity(string $city): AddModifyData
 	{
 		$this->city = $city;
 		return $this;
@@ -135,9 +158,9 @@ class AddData
 
 	/**
 	 * @param string $street
-	 * @return AddData
+	 * @return AddModifyData
 	 */
-	public function setStreet(string $street): AddData
+	public function setStreet(string $street): AddModifyData
 	{
 		$this->street = $street;
 		return $this;
@@ -153,9 +176,9 @@ class AddData
 
 	/**
 	 * @param string|null $streetExtra
-	 * @return AddData
+	 * @return AddModifyData
 	 */
-	public function setStreetExtra(?string $streetExtra): AddData
+	public function setStreetExtra(?string $streetExtra): AddModifyData
 	{
 		$this->streetExtra = $streetExtra;
 		return $this;
@@ -171,9 +194,9 @@ class AddData
 
 	/**
 	 * @param bool $defaultBilling
-	 * @return AddData
+	 * @return AddModifyData
 	 */
-	public function setDefaultBilling(bool $defaultBilling): AddData
+	public function setDefaultBilling(bool $defaultBilling): AddModifyData
 	{
 		$this->defaultBilling = $defaultBilling;
 		return $this;
@@ -189,9 +212,9 @@ class AddData
 
 	/**
 	 * @param bool $defaultShipping
-	 * @return AddData
+	 * @return AddModifyData
 	 */
-	public function setDefaultShipping(bool $defaultShipping): AddData
+	public function setDefaultShipping(bool $defaultShipping): AddModifyData
 	{
 		$this->defaultShipping = $defaultShipping;
 		return $this;

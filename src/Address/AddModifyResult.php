@@ -3,7 +3,7 @@ namespace Ecommerce\Address;
 
 use Ecommerce\Common\ResultTrait;
 
-class AddResult
+class AddModifyResult
 {
 	use ResultTrait;
 
