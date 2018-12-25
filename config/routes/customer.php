@@ -68,6 +68,7 @@ return HttpRouteCreator::create()
 							)
 							->getConfig(),
 						'address'     => include 'customer/address.php',
+						'password'    => include 'customer/password.php',
 						'transaction' => include 'customer/transaction.php',
 					]
 				)

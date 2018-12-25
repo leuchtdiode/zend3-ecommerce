@@ -7,7 +7,6 @@ use Ecommerce\Rest\Action\Customer\Address\GetList;
 
 return HttpRouteCreator::create()
 	->setRoute('/address')
-	->setAction(GetList::class)
 	->setMayTerminate(false)
 	->setChildRoutes(
 		[
