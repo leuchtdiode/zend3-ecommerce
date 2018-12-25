@@ -34,7 +34,7 @@ abstract class Base extends AbstractRestfulController
 				return $this->forbidden();
 			}
 
-			list ($bearer, $token) = explode(' ', $authHeader->getFieldValue());
+			$token = $authHeader->getFieldValue();
 
 			if (!$token)
 			{
