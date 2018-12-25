@@ -5,6 +5,7 @@ use Common\Router\HttpRouteCreator;
 use Ecommerce\Rest\Action\Customer\Get;
 use Ecommerce\Rest\Action\Customer\Login;
 use Ecommerce\Rest\Action\Customer\Register;
+use Ecommerce\Rest\Action\Customer\Activate;
 
 return HttpRouteCreator::create()
 	->setRoute('/customer')
@@ -48,6 +49,18 @@ return HttpRouteCreator::create()
 						'get'         => HttpRouteCreator::create()
 							->setAction(Get::class)
 							->setMethods([ 'GET' ])
+							->getConfig(),
+						'activate'    => HttpRouteCreator::create()
+							->setRoute('/activate')
+							->setMayTerminate(false)
+							->setChildRoutes(
+								[
+									HttpRouteCreator::create()
+										->setAction(Activate::class)
+										->setMethods([ 'POST' ])
+										->getConfig(),
+								]
+							)
 							->getConfig(),
 						'address'     => include 'customer/address.php',
 						'transaction' => include 'customer/transaction.php',
