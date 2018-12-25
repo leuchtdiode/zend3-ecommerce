@@ -30,7 +30,14 @@ class GetList extends Base
 	 */
 	public function executeAction()
 	{
-		$customerId = $this->getCustomer()->getId();
+		$customerId = $this
+			->params()
+			->fromRoute('id');
+
+		if (!$this->customerCheck($customerId))
+		{
+			return $this->forbidden();
+		}
 
 		$addresses = $this->provider->filter(
 			FilterChain::create()
@@ -42,7 +49,8 @@ class GetList extends Base
 		return Response::is()
 			->successful()
 			->data(ObjectToArrayHydrator::hydrate(
-				$addresses
+				GetListSuccessData::create()
+					->setAddresses($addresses)
 			))
 			->dispatch();
 	}
