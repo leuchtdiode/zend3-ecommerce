@@ -55,9 +55,9 @@ class Entity
 	private $customer;
 
 	/**
-	 * @var ArrayCollection|TransactionItemEntity
+	 * @var ArrayCollection|TransactionItemEntity[]
 	 *
-	 * @ORM\OneToMany(targetEntity="Ecommerce\Db\Transaction\Item\Entity", mappedBy="transaction")
+	 * @ORM\OneToMany(targetEntity="Ecommerce\Db\Transaction\Item\Entity", mappedBy="transaction", cascade={"persist"})
 	 */
 	private $items;
 
@@ -168,7 +168,7 @@ class Entity
 	}
 
 	/**
-	 * @return ArrayCollection|TransactionItemEntity
+	 * @return ArrayCollection|TransactionItemEntity[]
 	 */
 	public function getItems()
 	{
@@ -176,7 +176,7 @@ class Entity
 	}
 
 	/**
-	 * @param ArrayCollection|TransactionItemEntity $items
+	 * @param ArrayCollection|TransactionItemEntity[] $items
 	 */
 	public function setItems($items): void
 	{

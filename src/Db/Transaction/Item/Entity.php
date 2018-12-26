@@ -54,7 +54,7 @@ class Entity
 	/**
 	 * @var TransactionEntity
 	 *
-	 * @ORM\ManyToOne(targetEntity="Ecommerce\Db\Transaction\Entity", inversedBy="items")
+	 * @ORM\ManyToOne(targetEntity="Ecommerce\Db\Transaction\Entity", inversedBy="items", cascade={"persist"})
 	 * @ORM\JoinColumn(name="transactionId", referencedColumnName="id", nullable=false)
 	 */
 	private $transaction;

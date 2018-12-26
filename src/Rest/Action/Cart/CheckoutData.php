@@ -8,6 +8,10 @@ use Ecommerce\Payment\MethodValidator;
 
 class CheckoutData extends Data
 {
+	const PAYMENT_METHOD      = 'paymentMethod';
+	const BILLING_ADDRESS_ID  = 'billingAddressId';
+	const SHIPPING_ADDRESS_ID = 'shippingAddressId';
+
 	/**
 	 * @return array
 	 */
@@ -15,15 +19,15 @@ class CheckoutData extends Data
 	{
 		return [
 			Text::create()
-				->setName('paymentMethod')
+				->setName(self::PAYMENT_METHOD)
 				->addValidator($this->container->get(MethodValidator::class))
 				->setRequired(true),
 			Uuid::create()
-				->setName('billingAddressId')
+				->setName(self::BILLING_ADDRESS_ID)
 				->setRequired(true),
 			Uuid::create()
-				->setName('shippingAddressId')
-				->setRequired(true)
+				->setName(self::SHIPPING_ADDRESS_ID)
+				->setRequired(true),
 		];
 	}
 }

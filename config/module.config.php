@@ -3,11 +3,23 @@ namespace Ecommerce;
 
 use Common\Router\HttpRouteCreator;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
+use Ecommerce\Payment\Method;
+use Ecommerce\Payment\MethodHandler\PayPal\MethodHandler as PayPalMethodHandler;
 use Ecommerce\Rest\Action\Plugin\Auth;
 use Ecommerce\Rest\Action\Plugin\AuthFactory;
 use Ramsey\Uuid\Doctrine\UuidType;
 
 return [
+
+	'ecommerce' => [
+		'payment' => [
+			'method' => [
+				Method::PAY_PAL => [
+					'handler' => PayPalMethodHandler::class,
+				]
+			]
+		],
+	],
 
 	'router' => [
 		'routes' => [
