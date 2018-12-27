@@ -5,7 +5,7 @@ use Common\Util\ArrayCreator;
 use Ecommerce\Customer\Customer;
 use Mail\Mail\PlaceholderValues;
 
-class ActivateMailSenderPlaceholderValues implements PlaceholderValues
+class ActivateMailPlaceholderValues implements PlaceholderValues
 {
 	/**
 	 * @var Customer
@@ -13,7 +13,7 @@ class ActivateMailSenderPlaceholderValues implements PlaceholderValues
 	private $customer;
 
 	/**
-	 * @return ActivateMailSenderPlaceholderValues
+	 * @return ActivateMailPlaceholderValues
 	 */
 	public static function create()
 	{
@@ -22,9 +22,9 @@ class ActivateMailSenderPlaceholderValues implements PlaceholderValues
 
 	/**
 	 * @param Customer $customer
-	 * @return ActivateMailSenderPlaceholderValues
+	 * @return ActivateMailPlaceholderValues
 	 */
-	public function setCustomer(Customer $customer): ActivateMailSenderPlaceholderValues
+	public function setCustomer(Customer $customer): ActivateMailPlaceholderValues
 	{
 		$this->customer = $customer;
 		return $this;

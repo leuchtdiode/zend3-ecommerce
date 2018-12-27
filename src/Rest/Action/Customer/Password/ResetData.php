@@ -5,11 +5,11 @@ use Common\RequestData\Data;
 use Common\RequestData\PropertyDefinition\PropertyDefinition;
 use Common\RequestData\PropertyDefinition\Text;
 
-class ChangeData extends Data
+class ResetData extends Data
 {
-	const PASSWORD            = 'password';
-	const PASSWORD_NEW        = 'passwordNew';
-	const PASSWORD_NEW_VERIFY = 'passwordNewVerify';
+	const HASH            = 'hash';
+	const PASSWORD        = 'password';
+	const PASSWORD_VERIFY = 'passwordVerify';
 
 	/**
 	 * @return PropertyDefinition[]
@@ -18,15 +18,15 @@ class ChangeData extends Data
 	{
 		return [
 			Text::create()
-				->setName(self::PASSWORD)
-				->setLabel(_('Aktuelles Passwort'))
+				->setName(self::HASH)
+				->setLabel(_('Hash'))
 				->setRequired(true),
 			Text::create()
-				->setName(self::PASSWORD_NEW)
+				->setName(self::PASSWORD)
 				->setLabel(_('Neues Passwort'))
 				->setRequired(true),
 			Text::create()
-				->setName(self::PASSWORD_NEW_VERIFY)
+				->setName(self::PASSWORD_VERIFY)
 				->setLabel(_('Neues Passwort (Verifizierung)'))
 				->setRequired(true),
 		];

@@ -37,6 +37,7 @@ return HttpRouteCreator::create()
 					]
 				)
 				->getConfig(),
+			'password' => include 'customer/password.php',
 			'single-item' => HttpRouteCreator::create()
 				->setRoute('/:id')
 				->setConstraints(
@@ -68,7 +69,7 @@ return HttpRouteCreator::create()
 							)
 							->getConfig(),
 						'address'     => include 'customer/address.php',
-						'password'    => include 'customer/password.php',
+						'password'    => include 'customer/specific-customer-password.php',
 						'transaction' => include 'customer/transaction.php',
 					]
 				)

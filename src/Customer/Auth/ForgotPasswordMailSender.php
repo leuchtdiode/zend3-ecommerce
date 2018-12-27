@@ -9,7 +9,7 @@ use Mail\Mail\Mail;
 use Mail\Mail\Recipient;
 use Mail\Queue\Queue;
 
-class ActivateMailSender
+class ForgotPasswordMailSender
 {
 	/**
 	 * @var array
@@ -33,9 +33,10 @@ class ActivateMailSender
 
 	/**
 	 * @param Customer $customer
+	 * @param string $hash
 	 * @return bool
 	 */
-	public function send(Customer $customer)
+	public function send(Customer $customer, string $hash)
 	{
 		$config = $this->config['ecommerce']['mail'];
 
@@ -43,10 +44,11 @@ class ActivateMailSender
 		{
 			$mail = new Mail();
 			$mail->setLayoutTemplate($config['layout']);
-			$mail->setContentTemplate($config['customer']['activate']['template']);
+			$mail->setContentTemplate($config['customer']['forgotPassword']['template']);
 			$mail->setPlaceholderValues(
-				ActivateMailPlaceholderValues::create()
+				ForgotPasswordMailPlaceholderValues::create()
 					->setCustomer($customer)
+					->setHash($hash)
 			);
 			$mail->setFrom(
 				Recipient::create(
@@ -63,7 +65,7 @@ class ActivateMailSender
 				]
 			);
 			$mail->setSubject(
-				Translator::translate($config['customer']['activate']['subject'])
+				Translator::translate($config['customer']['forgotPassword']['subject'])
 			);
 
 			$this->mailQueue->add($mail);

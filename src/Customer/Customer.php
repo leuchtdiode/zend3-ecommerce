@@ -146,6 +146,16 @@ class Customer implements ArrayHydratable
 	/**
 	 * @ObjectToArrayHydratorProperty
 	 *
+	 * @return null|string
+	 */
+	public function getForgotPasswordHash()
+	{
+		return $this->entity->getForgotPasswordHash();
+	}
+
+	/**
+	 * @ObjectToArrayHydratorProperty
+	 *
 	 * @return DateTime
 	 */
 	public function getCreatedDate()

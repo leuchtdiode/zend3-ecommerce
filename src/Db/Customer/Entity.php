@@ -88,6 +88,13 @@ class Entity
 	private $taxNumber;
 
 	/**
+	 * @var string|null
+	 *
+	 * @ORM\Column(type="string", length=20, nullable=true)
+	 */
+	private $forgotPasswordHash;
+
+	/**
 	 * @var DateTime
 	 *
 	 * @ORM\Column(type="datetime")
@@ -270,6 +277,22 @@ class Entity
 	public function setTaxNumber(?string $taxNumber): void
 	{
 		$this->taxNumber = $taxNumber;
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getForgotPasswordHash(): ?string
+	{
+		return $this->forgotPasswordHash;
+	}
+
+	/**
+	 * @param string|null $forgotPasswordHash
+	 */
+	public function setForgotPasswordHash(?string $forgotPasswordHash): void
+	{
+		$this->forgotPasswordHash = $forgotPasswordHash;
 	}
 
 	/**

@@ -2,16 +2,16 @@
 namespace Ecommerce;
 
 use Common\Router\HttpRouteCreator;
-use Ecommerce\Rest\Action\Customer\Password\Change;
+use Ecommerce\Rest\Action\Customer\Password\Request;
 
 return HttpRouteCreator::create()
 	->setRoute('/password')
 	->setMayTerminate(false)
 	->setChildRoutes(
 		[
-			'change' => HttpRouteCreator::create()
-				->setAction(Change::class)
-				->setMethods([ 'PUT' ])
+			'request' => HttpRouteCreator::create()
+				->setAction(Request::class)
+				->setMethods([ 'POST' ])
 				->getConfig(),
 		]
 	)
