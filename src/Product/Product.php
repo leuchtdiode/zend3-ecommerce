@@ -117,6 +117,16 @@ class Product implements ArrayHydratable, Equals
 	 *
 	 * @return string
 	 */
+	public function getNumber()
+	{
+		return $this->entity->getNumber();
+	}
+
+	/**
+	 * @ObjectToArrayHydratorProperty
+	 *
+	 * @return string
+	 */
 	public function getTitle()
 	{
 		return $this->entity->getTitle();

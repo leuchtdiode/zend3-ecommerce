@@ -11,7 +11,10 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 /**
- * @ORM\Table(name="ecommerce_products")
+ * @ORM\Table(
+ * 		name="ecommerce_products",
+ * 		uniqueConstraints={@ORM\UniqueConstraint(columns={"number"})}
+ * )
  * @ORM\Entity(repositoryClass="Ecommerce\Db\Product\Repository")
  */
 class Entity
@@ -23,6 +26,13 @@ class Entity
 	 * @ORM\Column(type="uuid");
 	 */
 	private $id;
+
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(type="string", length=100)
+	 */
+	private $number;
 
 	/**
 	 * @var string
@@ -103,6 +113,22 @@ class Entity
 	public function setId(UuidInterface $id): void
 	{
 		$this->id = $id;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getNumber(): string
+	{
+		return $this->number;
+	}
+
+	/**
+	 * @param string $number
+	 */
+	public function setNumber(string $number): void
+	{
+		$this->number = $number;
 	}
 
 	/**
