@@ -30,6 +30,13 @@ class Entity
 	private $main;
 
 	/**
+	 * @var int
+	 *
+	 * @ORM\Column(type="integer")
+	 */
+	private $sort;
+
+	/**
 	 * @var AssetFileEntity
 	 *
 	 * @ORM\ManyToOne(targetEntity="Assets\Db\File\Entity")
@@ -83,6 +90,22 @@ class Entity
 	public function setMain(bool $main): void
 	{
 		$this->main = $main;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getSort(): int
+	{
+		return $this->sort;
+	}
+
+	/**
+	 * @param int $sort
+	 */
+	public function setSort(int $sort): void
+	{
+		$this->sort = $sort;
 	}
 
 	/**

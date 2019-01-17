@@ -51,6 +51,16 @@ class Image implements ArrayHydratable
 	}
 
 	/**
+	 * @ObjectToArrayHydratorProperty
+	 *
+	 * @return int
+	 */
+	public function getSort()
+	{
+		return $this->entity->getSort();
+	}
+
+	/**
 	 * @return Entity
 	 */
 	public function getEntity(): Entity
