@@ -9,9 +9,23 @@ return HttpRouteCreator::create()
 	->setMayTerminate(false)
 	->setChildRoutes(
 		[
-			'get-list' => HttpRouteCreator::create()
+			'get-list'    => HttpRouteCreator::create()
 				->setMethods(['GET'])
 				->setAction(GetList::class)
+				->getConfig(),
+			'single-item' => HttpRouteCreator::create()
+				->setRoute('/:productId')
+				->setConstraints(
+					[
+						'productId' => '.{36}'
+					]
+				)
+				->setMayTerminate(false)
+				->setChildRoutes(
+					[
+						'image' => include 'product/image.php',
+					]
+				)
 				->getConfig(),
 		]
 	)

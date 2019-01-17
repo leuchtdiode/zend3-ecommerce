@@ -10,7 +10,7 @@ use Ramsey\Uuid\UuidInterface;
 
 /**
  * @ORM\Table(name="ecommerce_product_images")
- * @ORM\Entity(repositoryClass="Ecommerce\Db\Product\Repository")
+ * @ORM\Entity(repositoryClass="Ecommerce\Db\Product\Image\Repository")
  */
 class Entity
 {

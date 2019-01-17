@@ -5,9 +5,10 @@ use Ecommerce\Address\Creator as AddressCreator;
 use Ecommerce\Cart\Creator as CartCreator;
 use Ecommerce\Cart\Item\Creator as CartItemCreator;
 use Ecommerce\Customer\Creator as CustomerCreator;
-use Ecommerce\Product\Attribute\Value\Creator as ProductAttributeValueCreator;
 use Ecommerce\Product\Attribute\Creator as ProductAttributeCreator;
+use Ecommerce\Product\Attribute\Value\Creator as ProductAttributeValueCreator;
 use Ecommerce\Product\Creator as ProductCreator;
+use Ecommerce\Product\Image\Creator as ProductImageCreator;
 use Ecommerce\Transaction\Creator as TransactionCreator;
 use Ecommerce\Transaction\Item\Creator as TransactionItemCreator;
 
@@ -39,6 +40,11 @@ class DtoCreatorProvider
 	private $productAttributeValueCreator;
 
 	/**
+	 * @var ProductImageCreator
+	 */
+	private $productImageCreator;
+
+	/**
 	 * @var TransactionCreator
 	 */
 	private $transactionCreator;
@@ -64,6 +70,7 @@ class DtoCreatorProvider
 	 * @param ProductCreator $productCreator
 	 * @param ProductAttributeCreator $productAttributeCreator
 	 * @param ProductAttributeValueCreator $productAttributeValueCreator
+	 * @param ProductImageCreator $productImageCreator
 	 * @param TransactionCreator $transactionCreator
 	 * @param TransactionItemCreator $transactionItemCreator
 	 * @param CartCreator $cartCreator
@@ -75,6 +82,7 @@ class DtoCreatorProvider
 		ProductCreator $productCreator,
 		ProductAttributeCreator $productAttributeCreator,
 		ProductAttributeValueCreator $productAttributeValueCreator,
+		ProductImageCreator $productImageCreator,
 		TransactionCreator $transactionCreator,
 		TransactionItemCreator $transactionItemCreator,
 		CartCreator $cartCreator,
@@ -86,6 +94,7 @@ class DtoCreatorProvider
 		$this->productCreator               = $productCreator;
 		$this->productAttributeCreator      = $productAttributeCreator;
 		$this->productAttributeValueCreator = $productAttributeValueCreator;
+		$this->productImageCreator          = $productImageCreator;
 		$this->transactionCreator           = $transactionCreator;
 		$this->transactionItemCreator       = $transactionItemCreator;
 		$this->cartCreator                  = $cartCreator;
@@ -145,6 +154,14 @@ class DtoCreatorProvider
 	public function getProductAttributeValueCreator(): ProductAttributeValueCreator
 	{
 		return $this->productAttributeValueCreator;
+	}
+
+	/**
+	 * @return ProductImageCreator
+	 */
+	public function getProductImageCreator(): ProductImageCreator
+	{
+		return $this->productImageCreator;
 	}
 
 	/**
