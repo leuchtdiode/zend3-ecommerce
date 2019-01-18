@@ -6,6 +6,7 @@ use Ecommerce\Common\Equals;
 use Ecommerce\Common\Price;
 use Ecommerce\Db\Product\Entity;
 use Ecommerce\Product\Attribute\Value\Value;
+use Ecommerce\Product\Image\Image;
 use Ramsey\Uuid\UuidInterface;
 
 class Product implements ArrayHydratable, Equals
@@ -37,17 +38,26 @@ class Product implements ArrayHydratable, Equals
 	private $attributeValues;
 
 	/**
+	 * @ObjectToArrayHydratorProperty
+	 *
+	 * @var Image|null
+	 */
+	private $mainImage;
+
+	/**
 	 * @param Entity $entity
 	 * @param Status $status
 	 * @param Price $price
 	 * @param Value[] $attributeValues
+	 * @param Image|null $mainImage
 	 */
-	public function __construct(Entity $entity, Status $status, Price $price, array $attributeValues)
+	public function __construct(Entity $entity, Status $status, Price $price, array $attributeValues, ?Image $mainImage)
 	{
 		$this->entity          = $entity;
 		$this->status          = $status;
 		$this->price           = $price;
 		$this->attributeValues = $attributeValues;
+		$this->mainImage       = $mainImage;
 	}
 
 	/**
@@ -82,6 +92,14 @@ class Product implements ArrayHydratable, Equals
 	public function getAttributeValues(): array
 	{
 		return $this->attributeValues;
+	}
+
+	/**
+	 * @return Image|null
+	 */
+	public function getMainImage(): ?Image
+	{
+		return $this->mainImage;
 	}
 
 	/**
