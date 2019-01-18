@@ -2,6 +2,7 @@
 namespace Ecommerce;
 
 use Common\Router\HttpRouteCreator;
+use Ecommerce\Rest\Action\Product\Get;
 use Ecommerce\Rest\Action\Product\GetList;
 
 return HttpRouteCreator::create()
@@ -23,6 +24,10 @@ return HttpRouteCreator::create()
 				->setMayTerminate(false)
 				->setChildRoutes(
 					[
+						'get'   => HttpRouteCreator::create()
+							->setMethods(['GET'])
+							->setAction(Get::class)
+							->getConfig(),
 						'image' => include 'product/image.php',
 					]
 				)
