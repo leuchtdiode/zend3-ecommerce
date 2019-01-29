@@ -1,6 +1,8 @@
 <?php
 namespace Ecommerce\Payment\MethodHandler\PayPal;
 
+use AsyncQueue\Queue\AddData as AsyncQueueAddData;
+use AsyncQueue\Queue\Adder as AsyncQueueAdder;
 use Common\Translator;
 use Ecommerce\Common\UrlProvider;
 use Ecommerce\Payment\CallbackType;
@@ -20,13 +22,9 @@ use PayPal\Api\Payment;
 use PayPal\Api\PaymentExecution;
 use PayPal\Api\RedirectUrls;
 use PayPal\Api\Transaction as PayPalTransaction;
-use PayPal\Auth\OAuthTokenCredential;
-use PayPal\Rest\ApiContext;
 
 class MethodHandler implements MethodHandlerInterface
 {
-	const SANDBOX = 'sandbox';
-	const LIVE    = 'live';
 	/**
 	 * @var array
 	 */
@@ -38,14 +36,14 @@ class MethodHandler implements MethodHandlerInterface
 	private $urlProvider;
 
 	/**
-	 * @var ApiContext
+	 * @var AsyncQueueAdder
 	 */
-	private $api;
+	private $asyncQueueAdder;
 
 	/**
-	 * @var array
+	 * @var Api
 	 */
-	private $payPalConfig;
+	private $api;
 
 	/**
 	 * @var InitData
@@ -55,32 +53,15 @@ class MethodHandler implements MethodHandlerInterface
 	/**
 	 * @param array $config
 	 * @param UrlProvider $urlProvider
+	 * @param AsyncQueueAdder $asyncQueueAdder
+	 * @param Api $api
 	 */
-	public function __construct(array $config, UrlProvider $urlProvider)
+	public function __construct(array $config, UrlProvider $urlProvider, AsyncQueueAdder $asyncQueueAdder, Api $api)
 	{
-		$this->config      = $config;
-		$this->urlProvider = $urlProvider;
-
-		$this->payPalConfig = $config['ecommerce']['payment']['method'][Method::PAY_PAL]['options'];
-
-		$this->api = new ApiContext(
-			new OAuthTokenCredential(
-				$this->payPalConfig['clientId'],
-				$this->payPalConfig['clientSecret']
-			)
-		);
-
-		$this->api->setConfig(
-			[
-				'http.ConnectionTimeOut' => $this->payPalConfig['http']['timeout'],
-				'http.Retry'             => $this->payPalConfig['http']['retry'],
-				'mode'                   => ($this->payPalConfig['sandbox'] ?? false) ? self::SANDBOX : self::LIVE,
-				'log.LogEnabled'         => $this->payPalConfig['log']['enabled'],
-				'log.FileName'           => $this->payPalConfig['log']['file'],
-				'log.LogLevel'           => $this->payPalConfig['log']['level']
-			]
-		);
-
+		$this->config          = $config;
+		$this->urlProvider     = $urlProvider;
+		$this->asyncQueueAdder = $asyncQueueAdder;
+		$this->api             = $api;
 	}
 
 	/**
@@ -144,7 +125,18 @@ class MethodHandler implements MethodHandlerInterface
 		{
 			$requestPayment->execute($execution, $this->api);
 
-			// TODO add async queue item
+			$this->asyncQueueAdder->add(
+				AsyncQueueAddData::create()
+					->setType(PendingCheckProcessor::ID)
+					->setPayLoad(
+						[
+							'transactionId' => $data
+								->getTransaction()
+								->getId()
+								->toString()
+						]
+					)
+			);
 
 			$result->setForeignId($paymentId);
 			$result->setTransactionStatus(Status::PENDING);
@@ -174,7 +166,7 @@ class MethodHandler implements MethodHandlerInterface
 			->setSubtotal($totalAmount);
 
 		$amount = new Amount();
-		$amount->setCurrency('EUR')
+		$amount->setCurrency('USD') // TODO for testing
 			->setTotal($totalAmount)
 			->setDetails($details);
 
@@ -216,12 +208,12 @@ class MethodHandler implements MethodHandlerInterface
 	private function getUrl($type, $transactionId)
 	{
 		return $this->urlProvider->get(
-				'ecommerce/payment/callback',
-				[
-					'transactionId' => $transactionId,
-					'method'        => Method::PAY_PAL,
-					'type'          => $type,
-				]
-			);
+			'ecommerce/payment/callback',
+			[
+				'transactionId' => $transactionId,
+				'method'        => Method::PAY_PAL,
+				'type'          => $type,
+			]
+		);
 	}
 }

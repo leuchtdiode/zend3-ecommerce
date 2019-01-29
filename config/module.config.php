@@ -5,6 +5,7 @@ use Common\Router\HttpRouteCreator;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Ecommerce\Payment\Method;
 use Ecommerce\Payment\MethodHandler\PayPal\MethodHandler as PayPalMethodHandler;
+use Ecommerce\Payment\MethodHandler\PayPal\PendingCheckProcessor;
 use Ecommerce\Rest\Action\Plugin\Auth;
 use Ecommerce\Rest\Action\Plugin\AuthFactory;
 use Ramsey\Uuid\Doctrine\UuidType;
@@ -21,6 +22,12 @@ return [
 					],
 				]
 			]
+		],
+	],
+
+	'async-queue' => [
+		'processors' => [
+			PendingCheckProcessor::ID => PendingCheckProcessor::class,
 		],
 	],
 

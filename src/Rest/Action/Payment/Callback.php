@@ -82,6 +82,7 @@ class Callback extends Base implements LoginExempt
 
 		$handleCallbackResult = $methodHandler->handleCallback(
 			HandleCallbackData::create()
+				->setTransaction($transaction)
 				->setType($type)
 				->setRequest($this->getRequest())
 		);

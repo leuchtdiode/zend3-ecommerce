@@ -1,10 +1,16 @@
 <?php
 namespace Ecommerce\Payment\MethodHandler;
 
+use Ecommerce\Transaction\Transaction;
 use Zend\Http\Request;
 
 class HandleCallbackData
 {
+	/**
+	 * @var Transaction
+	 */
+	private $transaction;
+
 	/**
 	 * @var string
 	 */
@@ -21,6 +27,24 @@ class HandleCallbackData
 	public static function create()
 	{
 		return new self();
+	}
+
+	/**
+	 * @return Transaction
+	 */
+	public function getTransaction(): Transaction
+	{
+		return $this->transaction;
+	}
+
+	/**
+	 * @param Transaction $transaction
+	 * @return HandleCallbackData
+	 */
+	public function setTransaction(Transaction $transaction): HandleCallbackData
+	{
+		$this->transaction = $transaction;
+		return $this;
 	}
 
 	/**
