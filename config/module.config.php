@@ -16,6 +16,9 @@ return [
 			'method' => [
 				Method::PAY_PAL => [
 					'handler' => PayPalMethodHandler::class,
+					'options' => [
+						// ... local config
+					],
 				]
 			]
 		],
@@ -31,6 +34,7 @@ return [
 						'customer' => include 'routes/customer.php',
 						'product'  => include 'routes/product.php',
 						'cart'     => include 'routes/cart.php',
+						'payment'  => include 'routes/payment.php',
 					]
 				)
 				->getConfig(),
@@ -49,7 +53,7 @@ return [
 			'ecommerce_entities' => [
 				'class' => AnnotationDriver::class,
 				'cache' => 'array',
-				'paths' => [ __DIR__ . '/../src/Db' ],
+				'paths' => [__DIR__ . '/../src/Db'],
 			],
 			'orm_default'        => [
 				'drivers' => [

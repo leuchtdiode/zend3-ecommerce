@@ -1,6 +1,7 @@
 <?php
 namespace Ecommerce\Transaction;
 
+use Exception;
 use Common\Db\FilterChain;
 use Ecommerce\Common\DtoCreatorProvider;
 use Ecommerce\Db\Transaction\Entity;
@@ -26,6 +27,18 @@ class Provider
 	{
 		$this->dtoCreatorProvider = $dtoCreatorProvider;
 		$this->repository         = $repository;
+	}
+
+	/**
+	 * @param string $id
+	 * @return Transaction|null
+	 * @throws Exception
+	 */
+	public function byId($id)
+	{
+		return ($entity = $this->repository->find($id))
+			? $this->createDto($entity)
+			: null;
 	}
 
 	/**
@@ -57,6 +70,7 @@ class Provider
 	/**
 	 * @param Entity $entity
 	 * @return Transaction
+	 * @throws Exception
 	 */
 	private function createDto(Entity $entity)
 	{

@@ -30,7 +30,7 @@ trait ResultTrait
 	 * @param Error[] $errors
 	 * @return ResultTrait
 	 */
-	public function setErrors(array $errors): ResultTrait
+	public function setErrors(array $errors)
 	{
 		$this->errors = $errors;
 		return $this;

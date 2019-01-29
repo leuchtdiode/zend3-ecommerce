@@ -8,4 +8,10 @@ interface MethodHandler
 	 * @return InitResult
 	 */
 	public function init(InitData $data): InitResult;
+
+	/**
+	 * @param HandleCallbackData $data
+	 * @return HandleCallbackResult
+	 */
+	public function handleCallback(HandleCallbackData $data): HandleCallbackResult;
 }

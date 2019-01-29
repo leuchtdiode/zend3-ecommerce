@@ -6,6 +6,7 @@ use Ecommerce\Db\Transaction\Entity as TransactionEntity;
 use Ecommerce\Db\Transaction\Item\Entity as TransactionItemEntity;
 use Ecommerce\Db\Transaction\Saver as TransactionEntitySaver;
 use Ecommerce\Payment\MethodHandler\InitData;
+use Ecommerce\Transaction\ReferenceNumberProvider;
 use Ecommerce\Transaction\Status;
 use Ecommerce\Transaction\Transaction;
 use Exception;
@@ -31,6 +32,11 @@ class Handler
 	private $dtoCreatorProvider;
 
 	/**
+	 * @var ReferenceNumberProvider
+	 */
+	private $referenceNumberProvider;
+
+	/**
 	 * @var CheckoutData
 	 */
 	private $data;
@@ -44,16 +50,19 @@ class Handler
 	 * @param MethodHandlerProvider $methodHandlerProvider
 	 * @param TransactionEntitySaver $transactionEntitySaver
 	 * @param DtoCreatorProvider $dtoCreatorProvider
+	 * @param ReferenceNumberProvider $referenceNumberProvider
 	 */
 	public function __construct(
 		MethodHandlerProvider $methodHandlerProvider,
 		TransactionEntitySaver $transactionEntitySaver,
-		DtoCreatorProvider $dtoCreatorProvider
+		DtoCreatorProvider $dtoCreatorProvider,
+		ReferenceNumberProvider $referenceNumberProvider
 	)
 	{
-		$this->methodHandlerProvider = $methodHandlerProvider;
-		$this->transactionEntitySaver = $transactionEntitySaver;
-		$this->dtoCreatorProvider = $dtoCreatorProvider;
+		$this->methodHandlerProvider   = $methodHandlerProvider;
+		$this->transactionEntitySaver  = $transactionEntitySaver;
+		$this->dtoCreatorProvider      = $dtoCreatorProvider;
+		$this->referenceNumberProvider = $referenceNumberProvider;
 	}
 
 	/**
@@ -91,15 +100,22 @@ class Handler
 		}
 
 		$result->setSuccess(true);
+		$result->setRedirectUrl($initResult->getRedirectUrl());
 
 		return $result;
 	}
 
+	/**
+	 * @return bool
+	 */
 	private function createTransaction()
 	{
 		try
 		{
 			$transactionEntity = new TransactionEntity();
+			$transactionEntity->setReferenceNumber(
+				$this->referenceNumberProvider->create()
+			);
 			$transactionEntity->setCustomer(
 				$this->data
 					->getCustomer()

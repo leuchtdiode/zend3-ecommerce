@@ -28,6 +28,13 @@ class Entity
 	/**
 	 * @var string
 	 *
+	 * @ORM\Column(type="string", length=20, nullable=false)
+	 */
+	private $referenceNumber;
+
+	/**
+	 * @var string
+	 *
 	 * @ORM\Column(type="string", length=50)
 	 */
 	private $status;
@@ -38,6 +45,13 @@ class Entity
 	 * @ORM\Column(type="string", length=50)
 	 */
 	private $paymentMethod;
+
+	/**
+	 * @var string|null
+	 *
+	 * @ORM\Column(type="string", nullable=true)
+	 */
+	private $foreignId;
 
 	/**
 	 * @var DateTime
@@ -106,6 +120,22 @@ class Entity
 	/**
 	 * @return string
 	 */
+	public function getReferenceNumber(): string
+	{
+		return $this->referenceNumber;
+	}
+
+	/**
+	 * @param string $referenceNumber
+	 */
+	public function setReferenceNumber(string $referenceNumber): void
+	{
+		$this->referenceNumber = $referenceNumber;
+	}
+
+	/**
+	 * @return string
+	 */
 	public function getStatus(): string
 	{
 		return $this->status;
@@ -133,6 +163,22 @@ class Entity
 	public function setPaymentMethod(string $paymentMethod): void
 	{
 		$this->paymentMethod = $paymentMethod;
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getForeignId(): ?string
+	{
+		return $this->foreignId;
+	}
+
+	/**
+	 * @param string|null $foreignId
+	 */
+	public function setForeignId(?string $foreignId): void
+	{
+		$this->foreignId = $foreignId;
 	}
 
 	/**

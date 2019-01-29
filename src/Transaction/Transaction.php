@@ -126,6 +126,24 @@ class Transaction implements ArrayHydratable
 	}
 
 	/**
+	 * @ObjectToArrayHydratorProperty
+	 *
+	 * @return string
+	 */
+	public function getReferenceNumber()
+	{
+		return $this->entity->getReferenceNumber();
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getForeignId()
+	{
+		return $this->entity->getForeignId();
+	}
+
+	/**
 	 * @return Entity
 	 */
 	public function getEntity(): Entity

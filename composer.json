@@ -29,7 +29,9 @@
 		"leuchtdiode/zend3-log": "^0.1",
 		"firebase/php-jwt": "^5.0",
 		"moneyphp/money": "^3.2",
-		"leuchtdiode/zend3-mail": "^0.1"
+		"leuchtdiode/zend3-mail": "^0.1",
+		"paypal/rest-api-sdk-php": "^1.14",
+		"leuchtdiode/zend3-async-queue": "^0.1"
 	},
 	"autoload": {
 		"psr-4": {

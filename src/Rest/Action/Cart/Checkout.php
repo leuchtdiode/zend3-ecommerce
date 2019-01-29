@@ -2,6 +2,7 @@
 namespace Ecommerce\Rest\Action\Cart;
 
 use Common\Db\FilterChain;
+use Common\Hydration\ObjectToArrayHydrator;
 use Ecommerce\Address\Address;
 use Ecommerce\Address\Provider as AddressProvider;
 use Ecommerce\Cart\Checkout\Handler as CheckoutHandler;
@@ -132,7 +133,12 @@ class Checkout extends Base
 
 		return Response::is()
 			->successful()
-			// TODO data
+			->data(
+				ObjectToArrayHydrator::hydrate(
+					CheckoutSuccessData::create()
+						->setRedirectUrl($result->getRedirectUrl())
+				)
+			)
 			->dispatch();
 	}
 
