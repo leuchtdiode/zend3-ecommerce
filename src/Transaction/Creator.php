@@ -7,6 +7,7 @@ use Ecommerce\Db\Transaction\Entity;
 use Ecommerce\Db\Transaction\Item\Entity as TransactionItemEntity;
 use Ecommerce\Payment\MethodProvider as PaymentMethodProvider;
 use Ecommerce\Transaction\Item\Creator as TransactionItemCreator;
+use Ecommerce\Transaction\Item\Item;
 use Exception;
 
 class Creator implements EntityDtoCreator
@@ -64,19 +65,38 @@ class Creator implements EntityDtoCreator
 	 */
 	public function byEntity($entity)
 	{
+		$items = array_map(
+			function (TransactionItemEntity $entity)
+			{
+				return $this->transactionItemCreator->byEntity($entity);
+			},
+			$entity->getItems()->toArray()
+		);
+
 		return new Transaction(
 			$entity,
 			$this->statusProvider->byId($entity->getStatus()),
 			$this->paymentMethodProvider->byId($entity->getPaymentMethod()),
-			array_map(
-				function (TransactionItemEntity $entity)
-				{
-					return $this->transactionItemCreator->byEntity($entity);
-				},
-				$entity->getItems()->toArray()
-			),
+			$items,
 			$this->addressCreator->byEntity($entity->getBillingAddress()),
-			$this->addressCreator->byEntity($entity->getShippingAddress())
+			$this->addressCreator->byEntity($entity->getShippingAddress()),
+			$this->getAmount($items)
 		);
+	}
+
+	/**
+	 * @param Item[] $items
+	 * @return int
+	 */
+	private function getAmount(array $items)
+	{
+		$cents = 0;
+
+		foreach ($items as $item)
+		{
+			$cents += (int)$item->getTotalPrice()->getGross();
+		}
+
+		return $cents;
 	}
 }

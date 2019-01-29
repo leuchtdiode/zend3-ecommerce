@@ -31,6 +31,21 @@ class Item implements ArrayHydratable
 	}
 
 	/**
+	 * @ObjectToArrayHydratorProperty
+	 *
+	 * @return Price
+	 */
+	public function getTotalPrice()
+	{
+		$singleCents = $this->getPrice()->getNet();
+
+		return Price::fromCents(
+			$singleCents * $this->getAmount(),
+			$this->getPrice()->getTaxRate()
+		);
+	}
+
+	/**
 	 * @return Price
 	 */
 	public function getPrice(): Price
@@ -46,6 +61,16 @@ class Item implements ArrayHydratable
 	public function getId()
 	{
 		return $this->entity->getId();
+	}
+
+	/**
+	 * @ObjectToArrayHydratorProperty
+	 *
+	 * @return int
+	 */
+	public function getAmount()
+	{
+		return $this->entity->getAmount();
 	}
 
 	/**
