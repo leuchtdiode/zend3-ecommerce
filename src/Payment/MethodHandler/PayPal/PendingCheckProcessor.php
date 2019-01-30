@@ -5,6 +5,8 @@ use AsyncQueue\Item\ProcessData;
 use AsyncQueue\Item\Processor;
 use AsyncQueue\Item\ProcessResult;
 use Ecommerce\Db\Transaction\Saver as TransactionEntitySaver;
+use Ecommerce\Transaction\Invoice\DefaultGenerator as DefaultInvoiceGenerator;
+use Ecommerce\Transaction\Invoice\GenerateData;
 use Ecommerce\Transaction\Provider as TransactionProvider;
 use Ecommerce\Transaction\Status;
 use Exception;
@@ -31,19 +33,27 @@ class PendingCheckProcessor implements Processor
 	private $api;
 
 	/**
+	 * @var DefaultInvoiceGenerator
+	 */
+	private $invoiceGenerator;
+
+	/**
 	 * @param TransactionProvider $transactionProvider
 	 * @param TransactionEntitySaver $transactionEntitySaver
 	 * @param Api $api
+	 * @param DefaultInvoiceGenerator $invoiceGenerator
 	 */
 	public function __construct(
 		TransactionProvider $transactionProvider,
 		TransactionEntitySaver $transactionEntitySaver,
-		Api $api
+		Api $api,
+		DefaultInvoiceGenerator $invoiceGenerator
 	)
 	{
 		$this->transactionProvider = $transactionProvider;
 		$this->transactionEntitySaver = $transactionEntitySaver;
 		$this->api = $api;
+		$this->invoiceGenerator = $invoiceGenerator;
 	}
 
 	/**
@@ -88,9 +98,16 @@ class PendingCheckProcessor implements Processor
 					{
 						$transactionEntity->setStatus(Status::SUCCESS);
 
-						// TODO generate invoice
+						$generateInvoiceResult = $this->invoiceGenerator->generate(
+							GenerateData::create()
+								->setTransaction($transaction)
+						);
 
-						$result->setSuccess(true);
+						// TODO send mail (wrap in transaction successful handler with invoice generator)
+
+						$result->setSuccess(
+							$generateInvoiceResult->isSuccess()
+						);
 					}
 					else if ($sale->getState() == State::SALE_DENIED)
 					{

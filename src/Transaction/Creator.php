@@ -3,6 +3,8 @@ namespace Ecommerce\Transaction;
 
 use Ecommerce\Address\Creator as AddressCreator;
 use Ecommerce\Common\EntityDtoCreator;
+use Ecommerce\Common\Price;
+use Ecommerce\Customer\Creator as CustomerCreator;
 use Ecommerce\Db\Transaction\Entity;
 use Ecommerce\Db\Transaction\Item\Entity as TransactionItemEntity;
 use Ecommerce\Payment\MethodProvider as PaymentMethodProvider;
@@ -33,6 +35,11 @@ class Creator implements EntityDtoCreator
 	private $addressCreator;
 
 	/**
+	 * @var CustomerCreator
+	 */
+	private $customerCreator;
+
+	/**
 	 * @param StatusProvider $statusProvider
 	 * @param PaymentMethodProvider $paymentMethodProvider
 	 */
@@ -59,6 +66,14 @@ class Creator implements EntityDtoCreator
 	}
 
 	/**
+	 * @param CustomerCreator $customerCreator
+	 */
+	public function setCustomerCreator(CustomerCreator $customerCreator): void
+	{
+		$this->customerCreator = $customerCreator;
+	}
+
+	/**
 	 * @param Entity $entity
 	 * @return Transaction
 	 * @throws Exception
@@ -75,20 +90,21 @@ class Creator implements EntityDtoCreator
 
 		return new Transaction(
 			$entity,
+			$this->customerCreator->byEntity($entity->getCustomer()),
 			$this->statusProvider->byId($entity->getStatus()),
 			$this->paymentMethodProvider->byId($entity->getPaymentMethod()),
 			$items,
 			$this->addressCreator->byEntity($entity->getBillingAddress()),
 			$this->addressCreator->byEntity($entity->getShippingAddress()),
-			$this->getAmount($items)
+			$this->getTotalPrice($items)
 		);
 	}
 
 	/**
 	 * @param Item[] $items
-	 * @return int
+	 * @return Price
 	 */
-	private function getAmount(array $items)
+	private function getTotalPrice(array $items)
 	{
 		$cents = 0;
 
@@ -97,6 +113,6 @@ class Creator implements EntityDtoCreator
 			$cents += (int)$item->getTotalPrice()->getGross();
 		}
 
-		return $cents;
+		return Price::fromCents($cents, 0);
 	}
 }

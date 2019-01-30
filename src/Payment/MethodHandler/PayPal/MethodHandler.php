@@ -159,7 +159,7 @@ class MethodHandler implements MethodHandlerInterface
 		$payer = new Payer();
 		$payer->setPaymentMethod('paypal');
 
-		$totalAmount = $transaction->getTotalPrice() / 100; // amount is cents, so divide by 100
+		$totalAmount = $transaction->getTotalPrice()->getGross() / 100; // amount is cents, so divide by 100
 
 		$details = new Details();
 		$details

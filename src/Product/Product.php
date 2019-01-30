@@ -61,6 +61,14 @@ class Product implements ArrayHydratable, Equals
 	}
 
 	/**
+	 * @return string
+	 */
+	public function __toString()
+	{
+		return $this->getTitle();
+	}
+
+	/**
 	 * @param Product $toCompare
 	 * @return bool
 	 */

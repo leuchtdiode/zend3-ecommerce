@@ -31,7 +31,8 @@
 		"moneyphp/money": "^3.2",
 		"leuchtdiode/zend3-mail": "^0.1",
 		"paypal/rest-api-sdk-php": "^1.14",
-		"leuchtdiode/zend3-async-queue": "^0.1"
+		"leuchtdiode/zend3-async-queue": "^0.1",
+		"spipu/html2pdf": "^5.2"
 	},
 	"autoload": {
 		"psr-4": {

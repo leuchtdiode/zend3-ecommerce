@@ -38,10 +38,11 @@ return [
 				->setMayTerminate(false)
 				->setChildRoutes(
 					[
-						'customer' => include 'routes/customer.php',
-						'product'  => include 'routes/product.php',
-						'cart'     => include 'routes/cart.php',
-						'payment'  => include 'routes/payment.php',
+						'customer'    => include 'routes/customer.php',
+						'product'     => include 'routes/product.php',
+						'cart'        => include 'routes/cart.php',
+						'payment'     => include 'routes/payment.php',
+						'transaction' => include 'routes/transaction.php',
 					]
 				)
 				->getConfig(),

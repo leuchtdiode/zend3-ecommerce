@@ -2,7 +2,10 @@
 namespace Ecommerce\Transaction;
 
 use Common\Hydration\ArrayHydratable;
+use DateTime;
 use Ecommerce\Address\Address;
+use Ecommerce\Common\Price;
+use Ecommerce\Customer\Customer;
 use Ecommerce\Db\Transaction\Entity;
 use Ecommerce\Payment\Method as PaymentMethod;
 use Ecommerce\Transaction\Item\Item;
@@ -14,6 +17,13 @@ class Transaction implements ArrayHydratable
 	 * @var Entity
 	 */
 	private $entity;
+
+	/**
+	 * @ObjectToArrayHydratorProperty
+	 *
+	 * @var Customer
+	 */
+	private $customer;
 
 	/**
 	 * @ObjectToArrayHydratorProperty
@@ -53,30 +63,33 @@ class Transaction implements ArrayHydratable
 	/**
 	 * @ObjectToArrayHydratorProperty
 	 *
-	 * @var int
+	 * @var Price
 	 */
 	private $totalPrice;
 
 	/**
 	 * @param Entity $entity
+	 * @param Customer $customer
 	 * @param Status $status
 	 * @param PaymentMethod $paymentMethod
 	 * @param Item[] $items
 	 * @param Address $billingAddress
 	 * @param Address $shippingAddress
-	 * @param int $totalPrice
+	 * @param Price $totalPrice
 	 */
 	public function __construct(
 		Entity $entity,
+		Customer $customer,
 		Status $status,
 		PaymentMethod $paymentMethod,
 		array $items,
 		Address $billingAddress,
 		Address $shippingAddress,
-		int $totalPrice
+		Price $totalPrice
 	)
 	{
 		$this->entity          = $entity;
+		$this->customer        = $customer;
 		$this->status          = $status;
 		$this->paymentMethod   = $paymentMethod;
 		$this->items           = $items;
@@ -86,9 +99,17 @@ class Transaction implements ArrayHydratable
 	}
 
 	/**
-	 * @return int
+	 * @return Customer
 	 */
-	public function getTotalPrice(): int
+	public function getCustomer(): Customer
+	{
+		return $this->customer;
+	}
+
+	/**
+	 * @return Price
+	 */
+	public function getTotalPrice(): Price
 	{
 		return $this->totalPrice;
 	}
@@ -151,6 +172,16 @@ class Transaction implements ArrayHydratable
 	public function getReferenceNumber()
 	{
 		return $this->entity->getReferenceNumber();
+	}
+
+	/**
+	 * @ObjectToArrayHydratorProperty
+	 *
+	 * @return DateTime
+	 */
+	public function getCreatedDate()
+	{
+		return $this->entity->getCreatedDate();
 	}
 
 	/**

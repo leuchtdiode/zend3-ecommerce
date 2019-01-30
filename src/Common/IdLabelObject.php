@@ -28,6 +28,14 @@ trait IdLabelObject
 	}
 
 	/**
+	 * @return string
+	 */
+	public function __toString()
+	{
+		return $this->getLabel();
+	}
+
+	/**
 	 * @param $id
 	 * @return bool
 	 */

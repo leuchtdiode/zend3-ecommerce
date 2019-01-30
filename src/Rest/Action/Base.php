@@ -82,4 +82,14 @@ abstract class Base extends AbstractRestfulController
 			->getResponse()
 			->setStatusCode(403);
 	}
+
+	/**
+	 * @return mixed
+	 */
+	protected function notFound()
+	{
+		return $this
+			->getResponse()
+			->setStatusCode(404);
+	}
 }

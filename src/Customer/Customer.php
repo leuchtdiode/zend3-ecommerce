@@ -40,6 +40,15 @@ class Customer implements ArrayHydratable
 	}
 
 	/**
+	 * @param Customer $customer
+	 * @return bool
+	 */
+	public function equals(Customer $customer)
+	{
+		return $this->getId()->equals($customer->getId());
+	}
+
+	/**
 	 * @ObjectToArrayHydratorProperty
 	 *
 	 * @return string
