@@ -1,6 +1,7 @@
 <?php
 namespace Ecommerce\Transaction;
 
+use Common\Db\OrderChain;
 use Exception;
 use Common\Db\FilterChain;
 use Ecommerce\Common\DtoCreatorProvider;
@@ -43,12 +44,13 @@ class Provider
 
 	/**
 	 * @param FilterChain $filterChain
+	 * @param OrderChain|null $orderChain
 	 * @return Transaction[]
 	 */
-	public function filter(FilterChain $filterChain)
+	public function filter(FilterChain $filterChain, ?OrderChain $orderChain = null)
 	{
 		return $this->createDtos(
-			$this->repository->filter($filterChain)
+			$this->repository->filter($filterChain, $orderChain)
 		);
 	}
 
