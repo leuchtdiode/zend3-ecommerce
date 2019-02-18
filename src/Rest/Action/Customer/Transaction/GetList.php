@@ -68,8 +68,10 @@ class GetList extends Base
 		return Response::is()
 			->successful()
 			->data(
+
 				ObjectToArrayHydrator::hydrate(
-					$transactions
+					GetListSuccessData::create()
+						->setTransactions($transactions)
 				)
 			)
 			->dispatch();
