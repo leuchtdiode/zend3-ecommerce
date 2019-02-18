@@ -2,11 +2,13 @@
 namespace Ecommerce\Rest\Action\Transaction;
 
 use Ecommerce\Rest\Action\Base;
+use Ecommerce\Rest\Action\LoginExempt;
 use Ecommerce\Transaction\Invoice\FileSystemPathProvider;
+use Ecommerce\Transaction\Invoice\SecurityHashHandler;
 use Ecommerce\Transaction\Provider as TransactionProvider;
 use Exception;
 
-class Invoice extends Base
+class Invoice extends Base implements LoginExempt
 {
 	/**
 	 * @var TransactionProvider
@@ -19,16 +21,24 @@ class Invoice extends Base
 	private $fileSystemPathProvider;
 
 	/**
+	 * @var SecurityHashHandler
+	 */
+	private $securityHashHandler;
+
+	/**
 	 * @param TransactionProvider $transactionProvider
 	 * @param FileSystemPathProvider $fileSystemPathProvider
+	 * @param SecurityHashHandler $securityHashHandler
 	 */
 	public function __construct(
 		TransactionProvider $transactionProvider,
-		FileSystemPathProvider $fileSystemPathProvider
+		FileSystemPathProvider $fileSystemPathProvider,
+		SecurityHashHandler $securityHashHandler
 	)
 	{
-		$this->transactionProvider    = $transactionProvider;
+		$this->transactionProvider = $transactionProvider;
 		$this->fileSystemPathProvider = $fileSystemPathProvider;
+		$this->securityHashHandler = $securityHashHandler;
 	}
 
 	/**
@@ -47,6 +57,15 @@ class Invoice extends Base
 		if (!$transaction)
 		{
 			return $this->notFound();
+		}
+
+		$hash = $this
+			->params()
+			->fromQuery('sec');
+
+		if (!$hash || !$this->securityHashHandler->valid($hash))
+		{
+			return $this->forbidden();
 		}
 
 		$path = $this->fileSystemPathProvider->get($transaction);
