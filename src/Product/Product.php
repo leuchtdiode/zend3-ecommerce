@@ -78,6 +78,16 @@ class Product implements ArrayHydratable, Equals
 	}
 
 	/**
+	 * @ObjectToArrayHydratorProperty
+	 *
+	 * @return bool
+	 */
+	public function isActive()
+	{
+		return $this->getStatus()->is(Status::ACTIVE);
+	}
+
+	/**
 	 * @param $quantity
 	 * @return bool
 	 */
