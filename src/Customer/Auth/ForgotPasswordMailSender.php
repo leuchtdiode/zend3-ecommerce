@@ -1,35 +1,21 @@
 <?php
 namespace Ecommerce\Customer\Auth;
 
-use Common\Translator;
 use Ecommerce\Customer\Customer;
-use Exception;
-use Log\Log;
-use Mail\Mail\Mail;
+use Ecommerce\Mail\Sender;
 use Mail\Mail\Recipient;
-use Mail\Queue\Queue;
 
-class ForgotPasswordMailSender
+class ForgotPasswordMailSender extends Sender
 {
 	/**
-	 * @var array
+	 * @var Customer
 	 */
-	private $config;
+	private $customer;
 
 	/**
-	 * @var Queue
+	 * @var string
 	 */
-	private $mailQueue;
-
-	/**
-	 * @param array $config
-	 * @param Queue $mailQueue
-	 */
-	public function __construct(array $config, Queue $mailQueue)
-	{
-		$this->config    = $config;
-		$this->mailQueue = $mailQueue;
-	}
+	private $hash;
 
 	/**
 	 * @param Customer $customer
@@ -38,45 +24,46 @@ class ForgotPasswordMailSender
 	 */
 	public function send(Customer $customer, string $hash)
 	{
-		$config = $this->config['ecommerce']['mail'];
+		$this->customer = $customer;
+		$this->hash     = $hash;
 
-		try
-		{
-			$mail = new Mail();
-			$mail->setLayoutTemplate($config['layout']);
-			$mail->setContentTemplate($config['customer']['forgotPassword']['template']);
-			$mail->setPlaceholderValues(
-				ForgotPasswordMailPlaceholderValues::create()
-					->setCustomer($customer)
-					->setHash($hash)
-			);
-			$mail->setFrom(
-				Recipient::create(
-					$config['from']['email'],
-					$config['from']['name']
-				)
-			);
-			$mail->setTo(
-				[
-					Recipient::create(
-						$customer->getEmail(),
-						$customer->getName()
-					)
-				]
-			);
-			$mail->setSubject(
-				Translator::translate($config['customer']['forgotPassword']['subject'])
-			);
+		return $this->addToQueue();
+	}
 
-			$this->mailQueue->add($mail);
+	/**
+	 * @return Recipient
+	 */
+	protected function getRecipient()
+	{
+		return Recipient::create(
+			$this->customer->getEmail(),
+			$this->customer->getName()
+		);
+	}
 
-			return true;
-		}
-		catch (Exception $ex)
-		{
-			Log::error($ex);
-		}
+	/**
+	 * @return string
+	 */
+	protected function getContentTemplate()
+	{
+		return $this->getEcommerceMailConfig()['customer']['forgotPassword']['template'];
+	}
 
-		return false;
+	/**
+	 * @return string
+	 */
+	protected function getSubject()
+	{
+		return $this->getEcommerceMailConfig()['customer']['forgotPassword']['subject'];
+	}
+
+	/**
+	 * @return ForgotPasswordMailPlaceholderValues
+	 */
+	protected function getPlaceholderValues()
+	{
+		return ForgotPasswordMailPlaceholderValues::create()
+			->setCustomer($this->customer)
+			->setHash($this->hash);
 	}
 }

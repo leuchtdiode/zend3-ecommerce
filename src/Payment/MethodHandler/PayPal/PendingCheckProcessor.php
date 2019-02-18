@@ -5,8 +5,9 @@ use AsyncQueue\Item\ProcessData;
 use AsyncQueue\Item\Processor;
 use AsyncQueue\Item\ProcessResult;
 use Ecommerce\Db\Transaction\Saver as TransactionEntitySaver;
-use Ecommerce\Transaction\Invoice\DefaultGenerator as DefaultInvoiceGenerator;
-use Ecommerce\Transaction\Invoice\GenerateData;
+use Ecommerce\Payment\PostPayment\Handler as PostPaymentHandler;
+use Ecommerce\Payment\PostPayment\SuccessfulData;
+use Ecommerce\Payment\PostPayment\UnsuccessfulData;
 use Ecommerce\Transaction\Provider as TransactionProvider;
 use Ecommerce\Transaction\Status;
 use Exception;
@@ -33,27 +34,27 @@ class PendingCheckProcessor implements Processor
 	private $api;
 
 	/**
-	 * @var DefaultInvoiceGenerator
+	 * @var PostPaymentHandler
 	 */
-	private $invoiceGenerator;
+	private $postPaymentHandler;
 
 	/**
 	 * @param TransactionProvider $transactionProvider
 	 * @param TransactionEntitySaver $transactionEntitySaver
 	 * @param Api $api
-	 * @param DefaultInvoiceGenerator $invoiceGenerator
+	 * @param PostPaymentHandler $postPaymentHandler
 	 */
 	public function __construct(
 		TransactionProvider $transactionProvider,
 		TransactionEntitySaver $transactionEntitySaver,
 		Api $api,
-		DefaultInvoiceGenerator $invoiceGenerator
+		PostPaymentHandler $postPaymentHandler
 	)
 	{
-		$this->transactionProvider = $transactionProvider;
+		$this->transactionProvider    = $transactionProvider;
 		$this->transactionEntitySaver = $transactionEntitySaver;
-		$this->api = $api;
-		$this->invoiceGenerator = $invoiceGenerator;
+		$this->api                    = $api;
+		$this->postPaymentHandler     = $postPaymentHandler;
 	}
 
 	/**
@@ -94,28 +95,39 @@ class PendingCheckProcessor implements Processor
 					{
 						$result->setRetryInSeconds(60);
 					}
-					else if ($sale->getState() == State::SALE_COMPLETED)
+					else
 					{
-						$transactionEntity->setStatus(Status::SUCCESS);
+						if ($sale->getState() == State::SALE_COMPLETED && false)
+						{
+							$transactionEntity->setStatus(Status::SUCCESS);
 
-						$generateInvoiceResult = $this->invoiceGenerator->generate(
-							GenerateData::create()
-								->setTransaction($transaction)
-						);
+							$postPaymentResult = $this->postPaymentHandler->successful(
+								SuccessfulData::create()
+									->setTransaction($transaction)
+							);
 
-						// TODO send mail (wrap in transaction successful handler with invoice generator)
+							$result->setSuccess(
+								$postPaymentResult->isSuccess()
+							);
+						}
+						else
+						{
+							if ($sale->getState() == State::SALE_DENIED || true)
+							{
+								Log::info($transactionId . ': Sale state is denied');
 
-						$result->setSuccess(
-							$generateInvoiceResult->isSuccess()
-						);
-					}
-					else if ($sale->getState() == State::SALE_DENIED)
-					{
-						Log::info($transactionId . ': Sale state is denied');
+								$transactionEntity->setStatus(Status::ERROR);
 
-						$transactionEntity->setStatus(Status::ERROR);
+								$postPaymentResult = $this->postPaymentHandler->unsuccessful(
+									UnsuccessfulData::create()
+										->setTransaction($transaction)
+								);
 
-						$result->setSuccess(true);
+								$result->setSuccess(
+									$postPaymentResult->isSuccess()
+								);
+							}
+						}
 					}
 				}
 				else

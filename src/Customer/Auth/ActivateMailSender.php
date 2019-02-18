@@ -1,35 +1,16 @@
 <?php
 namespace Ecommerce\Customer\Auth;
 
-use Common\Translator;
 use Ecommerce\Customer\Customer;
-use Exception;
-use Log\Log;
-use Mail\Mail\Mail;
+use Ecommerce\Mail\Sender;
 use Mail\Mail\Recipient;
-use Mail\Queue\Queue;
 
-class ActivateMailSender
+class ActivateMailSender extends Sender
 {
 	/**
-	 * @var array
+	 * @var Customer
 	 */
-	private $config;
-
-	/**
-	 * @var Queue
-	 */
-	private $mailQueue;
-
-	/**
-	 * @param array $config
-	 * @param Queue $mailQueue
-	 */
-	public function __construct(array $config, Queue $mailQueue)
-	{
-		$this->config    = $config;
-		$this->mailQueue = $mailQueue;
-	}
+	private $customer;
 
 	/**
 	 * @param Customer $customer
@@ -37,44 +18,44 @@ class ActivateMailSender
 	 */
 	public function send(Customer $customer)
 	{
-		$config = $this->config['ecommerce']['mail'];
+		$this->customer = $customer;
 
-		try
-		{
-			$mail = new Mail();
-			$mail->setLayoutTemplate($config['layout']);
-			$mail->setContentTemplate($config['customer']['activate']['template']);
-			$mail->setPlaceholderValues(
-				ActivateMailPlaceholderValues::create()
-					->setCustomer($customer)
-			);
-			$mail->setFrom(
-				Recipient::create(
-					$config['from']['email'],
-					$config['from']['name']
-				)
-			);
-			$mail->setTo(
-				[
-					Recipient::create(
-						$customer->getEmail(),
-						$customer->getName()
-					)
-				]
-			);
-			$mail->setSubject(
-				Translator::translate($config['customer']['activate']['subject'])
-			);
+		return $this->addToQueue();
+	}
 
-			$this->mailQueue->add($mail);
+	/**
+	 * @return Recipient
+	 */
+	protected function getRecipient()
+	{
+		return Recipient::create(
+			$this->customer->getEmail(),
+			$this->customer->getName()
+		);
+	}
 
-			return true;
-		}
-		catch (Exception $ex)
-		{
-			Log::error($ex);
-		}
+	/**
+	 * @return string
+	 */
+	protected function getContentTemplate()
+	{
+		return $this->getEcommerceMailConfig()['customer']['activate']['template'];
+	}
 
-		return false;
+	/**
+	 * @return string
+	 */
+	protected function getSubject()
+	{
+		return $this->getEcommerceMailConfig()['customer']['activate']['subject'];
+	}
+
+	/**
+	 * @return ActivateMailPlaceholderValues
+	 */
+	protected function getPlaceholderValues()
+	{
+		return ActivateMailPlaceholderValues::create()
+			->setCustomer($this->customer);
 	}
 }
