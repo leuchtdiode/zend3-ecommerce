@@ -97,7 +97,7 @@ class PendingCheckProcessor implements Processor
 					}
 					else
 					{
-						if ($sale->getState() == State::SALE_COMPLETED && false)
+						if ($sale->getState() == State::SALE_COMPLETED)
 						{
 							$transactionEntity->setStatus(Status::SUCCESS);
 
@@ -112,7 +112,7 @@ class PendingCheckProcessor implements Processor
 						}
 						else
 						{
-							if ($sale->getState() == State::SALE_DENIED || true)
+							if ($sale->getState() == State::SALE_DENIED)
 							{
 								Log::info($transactionId . ': Sale state is denied');
 

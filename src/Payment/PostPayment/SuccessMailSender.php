@@ -3,12 +3,20 @@ namespace Ecommerce\Payment\PostPayment;
 
 use Ecommerce\Customer\Customer;
 use Ecommerce\Mail\Sender;
+use Ecommerce\Transaction\Invoice\Provider as InvoiceProvider;
 use Ecommerce\Transaction\Transaction;
 use Log\Log;
+use Mail\Mail\Attachment;
 use Mail\Mail\Recipient;
+use Mail\Queue\Queue;
 
 class SuccessMailSender extends Sender
 {
+	/**
+	 * @var InvoiceProvider
+	 */
+	private $invoiceProvider;
+
 	/**
 	 * @var Transaction
 	 */
@@ -18,6 +26,18 @@ class SuccessMailSender extends Sender
 	 * @var Customer
 	 */
 	private $customer;
+
+	/**
+	 * @param array $config
+	 * @param Queue $mailQueue
+	 * @param InvoiceProvider $invoiceProvider
+	 */
+	public function __construct(array $config, Queue $mailQueue, InvoiceProvider $invoiceProvider)
+	{
+		parent::__construct($config, $mailQueue);
+
+		$this->invoiceProvider = $invoiceProvider;
+	}
 
 	/**
 	 * @param Transaction $transaction
@@ -31,6 +51,21 @@ class SuccessMailSender extends Sender
 		$this->customer    = $transaction->getCustomer();
 
 		return $this->addToQueue();
+	}
+
+	/**
+	 * @return Attachment[]
+	 */
+	protected function getAttachments()
+	{
+		$invoice = $this->invoiceProvider->get($this->transaction);
+
+		return [
+			Attachment::create()
+				->setFileName($invoice->getFileName())
+				->setMimeType($invoice->getMimeType())
+				->setContent($invoice->getContent())
+		];
 	}
 
 	/**

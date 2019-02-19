@@ -4,6 +4,7 @@ namespace Ecommerce\Mail;
 use Common\Translator;
 use Exception;
 use Log\Log;
+use Mail\Mail\Attachment;
 use Mail\Mail\Mail;
 use Mail\Mail\PlaceholderValues;
 use Mail\Mail\Recipient;
@@ -60,6 +61,14 @@ abstract class Sender
 	}
 
 	/**
+	 * @return Attachment[]
+	 */
+	protected function getAttachments()
+	{
+		return [];
+	}
+
+	/**
 	 * @return bool
 	 */
 	public function addToQueue()
@@ -90,6 +99,9 @@ abstract class Sender
 			);
 			$mail->setSubject(
 				Translator::translate($this->getSubject())
+			);
+			$mail->setAttachments(
+				$this->getAttachments()
 			);
 
 			$this->mailQueue->add($mail);
