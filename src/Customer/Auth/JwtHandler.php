@@ -42,7 +42,7 @@ class JwtHandler
 		);
 		$issuedAt   = time();
 		$notBefore  = $issuedAt;
-		$expire     = $notBefore + 86400;
+		$expire     = $notBefore + $this->config['ecommerce']['customer']['auth']['jwt']['timeoutInSeconds'];
 		$serverName = gethostname();
 
 		/*

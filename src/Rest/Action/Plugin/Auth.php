@@ -3,6 +3,7 @@ namespace Ecommerce\Rest\Action\Plugin;
 
 use Ecommerce\Customer\Auth\JwtHandler;
 use Ecommerce\Customer\Auth\JwtValidationResult;
+use Ecommerce\Customer\Customer;
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 
 class Auth extends AbstractPlugin
@@ -26,6 +27,14 @@ class Auth extends AbstractPlugin
 	public function __invoke()
 	{
 		return $this;
+	}
+
+	/**
+	 * @param Customer $customer
+	 */
+	public function generateJwtToken(Customer $customer)
+	{
+		return $this->jwtHandler->generate($customer);
 	}
 
 	/**

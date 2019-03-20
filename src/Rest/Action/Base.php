@@ -3,6 +3,7 @@ namespace Ecommerce\Rest\Action;
 
 use Ecommerce\Customer\Customer;
 use Ecommerce\Rest\Action\Plugin\Auth;
+use Zend\Http\Request;
 use Zend\Mvc\Controller\AbstractRestfulController;
 use Zend\Mvc\MvcEvent;
 
@@ -22,39 +23,61 @@ abstract class Base extends AbstractRestfulController
 	 */
 	public function onDispatch(MvcEvent $e)
 	{
-		$request = $e->getRequest();
+		$request  = $e->getRequest();
+		$response = $e->getResponse();
 
-		if (!$this instanceof LoginExempt) // needs login
+		$this->loadCustomer($request);
+
+		if (!$this instanceof LoginExempt && !$this->customer) // needs login, but not logged in
 		{
-			$authHeader = $request
-				->getHeader('Authorization');
+			return $this->forbidden();
+		}
 
-			if (!$authHeader)
-			{
-				return $this->forbidden();
-			}
-
-			$token = $authHeader->getFieldValue();
-
-			if (!$token)
-			{
-				return $this->forbidden();
-			}
-
-			$result = $this->auth()->validateJwtToken($token);
-
-			if (!$result->isValid())
-			{
-				return $this->forbidden();
-			}
-
-			$this->customer = $result->getCustomer();
+		if ($this->customer)
+		{
+			$response->getHeaders()->addHeaders(
+				[
+					'X-JwtToken' => $this
+						->auth()
+						->generateJwtToken($this->customer)
+				]
+			);
 		}
 
 		return parent::onDispatch($e);
 	}
 
 	abstract public function executeAction();
+
+	/**
+	 * @param Request $request
+	 */
+	protected function loadCustomer($request)
+	{
+		$authHeader = $request
+			->getHeader('Authorization');
+
+		if (!$authHeader)
+		{
+			return;
+		}
+
+		$token = $authHeader->getFieldValue();
+
+		if (!$token)
+		{
+			return;
+		}
+
+		$result = $this->auth()->validateJwtToken($token);
+
+		if (!$result->isValid())
+		{
+			return;
+		}
+
+		$this->customer = $result->getCustomer();
+	}
 
 	/**
 	 * @return Customer|null
