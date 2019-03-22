@@ -24,7 +24,7 @@
 		"ext-openssl": "*",
 		"ext-gettext": "*",
 		"ext-intl": "*",
-		"leuchtdiode/zend3-common": "^0.1",
+		"leuchtdiode/zend3-common": "^1.0",
 		"ramsey/uuid-doctrine": "^1.5",
 		"leuchtdiode/zend3-log": "^0.1",
 		"firebase/php-jwt": "^5.0",
