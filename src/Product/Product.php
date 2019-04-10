@@ -45,19 +45,35 @@ class Product implements ArrayHydratable, Equals
 	private $mainImage;
 
 	/**
+	 * @ObjectToArrayHydratorProperty
+	 *
+	 * @var string|null
+	 */
+	private $url;
+
+	/**
 	 * @param Entity $entity
 	 * @param Status $status
 	 * @param Price $price
 	 * @param Value[] $attributeValues
-	 * @param Image|null $mainImage
+	 * @param Image|null $mainImag
+	 * @param string|null $url
 	 */
-	public function __construct(Entity $entity, Status $status, Price $price, array $attributeValues, ?Image $mainImage)
+	public function __construct(
+		Entity $entity,
+		Status $status,
+		Price $price,
+		array $attributeValues,
+		?Image $mainImage,
+		?string $url
+	)
 	{
-		$this->entity          = $entity;
-		$this->status          = $status;
-		$this->price           = $price;
+		$this->entity = $entity;
+		$this->status = $status;
+		$this->price = $price;
 		$this->attributeValues = $attributeValues;
-		$this->mainImage       = $mainImage;
+		$this->mainImage = $mainImage;
+		$this->url = $url;
 	}
 
 	/**
@@ -118,6 +134,14 @@ class Product implements ArrayHydratable, Equals
 	public function getMainImage(): ?Image
 	{
 		return $this->mainImage;
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getUrl(): ?string
+	{
+		return $this->url;
 	}
 
 	/**

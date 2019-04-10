@@ -23,6 +23,11 @@ class Creator implements EntityDtoCreator
 	private $statusProvider;
 
 	/**
+	 * @var UrlProvider
+	 */
+	private $urlProvider;
+
+	/**
 	 * @var ProductAttributeValueCreator
 	 */
 	private $productAttributeValueCreator;
@@ -35,14 +40,13 @@ class Creator implements EntityDtoCreator
 	/**
 	 * @param PriceCreator $priceCreator
 	 * @param StatusProvider $statusProvider
+	 * @param UrlProvider $urlProvider
 	 */
-	public function __construct(
-		PriceCreator $priceCreator,
-		StatusProvider $statusProvider
-	)
+	public function __construct(PriceCreator $priceCreator, StatusProvider $statusProvider, UrlProvider $urlProvider)
 	{
 		$this->priceCreator   = $priceCreator;
 		$this->statusProvider = $statusProvider;
+		$this->urlProvider    = $urlProvider;
 	}
 
 	/**
@@ -78,7 +82,8 @@ class Creator implements EntityDtoCreator
 				},
 				$entity->getAttributeValues()->toArray()
 			),
-			$this->getMainImage($entity)
+			$this->getMainImage($entity),
+			$this->urlProvider->get($entity->getId())
 		);
 	}
 
