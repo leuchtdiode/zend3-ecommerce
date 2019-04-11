@@ -106,13 +106,6 @@ class Callback extends Base implements LoginExempt
 
 		return $this
 			->redirect()
-			->toUrl(
-				sprintf(
-					'%s://%s%s',
-					$this->config['ecommerce']['frontend']['url']['protocol'],
-					$this->config['ecommerce']['frontend']['url']['host'],
-					$this->config['ecommerce']['payment']['returnUrls'][$type]
-				)
-			);
+			->toUrl($this->config['ecommerce']['payment']['returnUrls'][$type]);
 	}
 }
