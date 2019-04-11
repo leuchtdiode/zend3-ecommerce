@@ -4,7 +4,7 @@ namespace Ecommerce\Payment\MethodHandler;
 class HandleCallbackResult
 {
 	/**
-	 * @var string
+	 * @var string|null
 	 */
 	private $foreignId;
 
@@ -14,17 +14,17 @@ class HandleCallbackResult
 	private $transactionStatus;
 
 	/**
-	 * @return string
+	 * @return string|null
 	 */
-	public function getForeignId(): string
+	public function getForeignId(): ?string
 	{
 		return $this->foreignId;
 	}
 
 	/**
-	 * @param string $foreignId
+	 * @param string|null $foreignId
 	 */
-	public function setForeignId(string $foreignId): void
+	public function setForeignId(?string $foreignId): void
 	{
 		$this->foreignId = $foreignId;
 	}
