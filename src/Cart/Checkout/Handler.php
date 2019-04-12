@@ -81,6 +81,8 @@ class Handler
 			$data->getPaymentMethod()
 		);
 
+		// TODO validations (like enough stock)
+
 		if (!$this->createTransaction())
 		{
 			return $result;
