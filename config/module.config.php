@@ -4,8 +4,10 @@ namespace Ecommerce;
 use Common\Router\HttpRouteCreator;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Ecommerce\Payment\Method;
+use Ecommerce\Payment\MethodHandler\AmazonPay\MethodHandler as AmazonPayMethodHandler;
 use Ecommerce\Payment\MethodHandler\PayPal\MethodHandler as PayPalMethodHandler;
 use Ecommerce\Payment\MethodHandler\PayPal\PendingCheckProcessor;
+use Ecommerce\Payment\MethodHandler\PrePayment\MethodHandler as PrePaymentMethodHandler;
 use Ecommerce\Rest\Action\Plugin\Auth;
 use Ecommerce\Rest\Action\Plugin\AuthFactory;
 use Ramsey\Uuid\Doctrine\UuidType;
@@ -20,7 +22,19 @@ return [
 					'options' => [
 						// ... local config
 					],
-				]
+				],
+				Method::AMAZON_PAY => [
+					'handler' => AmazonPayMethodHandler::class,
+					'options' => [
+						// ... local config
+					],
+				],
+				Method::PRE_PAYMENT => [
+					'handler' => PrePaymentMethodHandler::class,
+					'options' => [
+						// ... local config
+					],
+				],
 			]
 		],
 	],

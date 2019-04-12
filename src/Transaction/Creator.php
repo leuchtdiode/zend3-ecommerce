@@ -130,6 +130,7 @@ class Creator implements EntityDtoCreator
 	/**
 	 * @param Entity $entity
 	 * @return string
+	 * @throws Exception
 	 */
 	private function getInvoiceUrl(Entity $entity)
 	{

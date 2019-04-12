@@ -26,7 +26,7 @@
 		"ext-intl": "*",
 		"leuchtdiode/zend3-common": "^1.0",
 		"ramsey/uuid-doctrine": "^1.5",
-		"leuchtdiode/zend3-log": "^0.1",
+		"leuchtdiode/zend3-log": "^1.0",
 		"firebase/php-jwt": "^5.0",
 		"moneyphp/money": "^3.2",
 		"leuchtdiode/zend3-mail": "^1.0",

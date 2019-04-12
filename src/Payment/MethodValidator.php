@@ -22,7 +22,7 @@ class MethodValidator extends AbstractValidator
 
 		parent::__construct(
 			[
-				'messagesTemplates' => [
+				'messageTemplates' => [
 					self::INVALID => Translator::translate('Ungültige Zahlungsmethode %value%'),
 				],
 			]

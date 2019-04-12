@@ -19,7 +19,7 @@ class Item implements ArrayHydratable
 	 *
 	 * @var Price
 	 */
-	private $price;
+	private $totalPrice;
 
 	/**
 	 * @ObjectToArrayHydratorProperty
@@ -33,11 +33,11 @@ class Item implements ArrayHydratable
 	 * @param Price $price
 	 * @param Product $product
 	 */
-	public function __construct(Entity $entity, Price $price, Product $product)
+	public function __construct(Entity $entity, Price $totalPrice, Product $product)
 	{
-		$this->entity  = $entity;
-		$this->price   = $price;
-		$this->product = $product;
+		$this->entity     = $entity;
+		$this->totalPrice = $totalPrice;
+		$this->product    = $product;
 	}
 
 	/**
@@ -53,22 +53,22 @@ class Item implements ArrayHydratable
 	 *
 	 * @return Price
 	 */
-	public function getTotalPrice()
+	public function getPrice()
 	{
-		$singleCents = $this->getPrice()->getNet();
+		$cents = $this->getTotalPrice()->getNet();
 
 		return Price::fromCents(
-			$singleCents * $this->getAmount(),
-			$this->getPrice()->getTaxRate()
+			$cents / $this->getAmount(),
+			$this->getTotalPrice()->getTaxRate()
 		);
 	}
 
 	/**
 	 * @return Price
 	 */
-	public function getPrice(): Price
+	public function getTotalPrice(): Price
 	{
-		return $this->price;
+		return $this->totalPrice;
 	}
 
 	/**
