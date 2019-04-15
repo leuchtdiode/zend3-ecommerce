@@ -18,13 +18,20 @@ class Provider
 	private $repository;
 
 	/**
+	 * @var Validator
+	 */
+	private $validator;
+
+	/**
 	 * @param DtoCreatorProvider $dtoCreatorProvider
 	 * @param Repository $repository
+	 * @param Validator $validator
 	 */
-	public function __construct(DtoCreatorProvider $dtoCreatorProvider, Repository $repository)
+	public function __construct(DtoCreatorProvider $dtoCreatorProvider, Repository $repository, Validator $validator)
 	{
 		$this->dtoCreatorProvider = $dtoCreatorProvider;
 		$this->repository         = $repository;
+		$this->validator          = $validator;
 	}
 
 	/**
@@ -44,8 +51,12 @@ class Provider
 	 */
 	private function createDto(Entity $entity)
 	{
-		return $this->dtoCreatorProvider
+		$cart = $this->dtoCreatorProvider
 			->getCartCreator()
 			->byEntity($entity);
+
+		$this->validator->validate($cart);
+
+		return $cart;
 	}
 }

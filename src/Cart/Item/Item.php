@@ -1,6 +1,7 @@
 <?php
 namespace Ecommerce\Cart\Item;
 
+use Common\Error;
 use Common\Hydration\ArrayHydratable;
 use Ecommerce\Db\Cart\Item\Entity;
 use Ecommerce\Product\Product;
@@ -19,6 +20,11 @@ class Item implements ArrayHydratable
 	private $product;
 
 	/**
+	 * @var Error[]
+	 */
+	private $validationErrors = [];
+
+	/**
 	 * @param Entity $entity
 	 * @param Product $product
 	 */
@@ -26,6 +32,24 @@ class Item implements ArrayHydratable
 	{
 		$this->entity  = $entity;
 		$this->product = $product;
+	}
+
+	/**
+	 * @param Error $error
+	 */
+	public function addValidationError(Error $error)
+	{
+		$this->validationErrors[] = $error;
+	}
+
+	/**
+	 * @ObjectToArrayHydratorProperty
+	 *
+	 * @return bool
+	 */
+	public function isValid()
+	{
+		return empty($this->validationErrors);
 	}
 
 	/**
@@ -46,6 +70,16 @@ class Item implements ArrayHydratable
 	public function getId()
 	{
 		return $this->entity->getId();
+	}
+
+	/**
+	 * @ObjectToArrayHydratorProperty
+	 *
+	 * @return Error[]
+	 */
+	public function getValidationErrors(): array
+	{
+		return $this->validationErrors;
 	}
 
 	/**

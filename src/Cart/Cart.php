@@ -41,6 +41,24 @@ class Cart implements ArrayHydratable
 	}
 
 	/**
+	 * @ObjectToArrayHydratorProperty
+	 *
+	 * @return bool
+	 */
+	public function isValid()
+	{
+		foreach ($this->getItems() as $item)
+		{
+			if (!$item->isValid())
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
 	 * @return Price
 	 */
 	public function getTotalPrice(): Price
