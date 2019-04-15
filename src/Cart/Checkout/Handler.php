@@ -1,6 +1,7 @@
 <?php
 namespace Ecommerce\Cart\Checkout;
 
+use Ecommerce\Cart\InvalidCartError;
 use Ecommerce\Common\DtoCreatorProvider;
 use Ecommerce\Db\Transaction\Entity as TransactionEntity;
 use Ecommerce\Db\Transaction\Item\Entity as TransactionItemEntity;
@@ -80,6 +81,15 @@ class Handler
 		$methodHandler = $this->methodHandlerProvider->getHandler(
 			$data->getPaymentMethod()
 		);
+
+		$cart = $data->getCart();
+
+		if (!$cart->isValid())
+		{
+			$result->addError(InvalidCartError::create());
+
+			return $result;
+		}
 
 		if (!$this->createTransaction())
 		{
