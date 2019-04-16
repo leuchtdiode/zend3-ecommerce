@@ -3,14 +3,14 @@ namespace Ecommerce\Db\Address\Filter;
 
 use Common\Db\Filter\Equals;
 
-class Customer extends Equals
+class Id extends Equals
 {
 	/**
 	 * @return string
 	 */
 	protected function getField()
 	{
-		return 't.customer';
+		return 't.id';
 	}
 
 	/**
@@ -18,6 +18,6 @@ class Customer extends Equals
 	 */
 	protected function getParameterName()
 	{
-		return 'addressCustomer';
+		return 'addressId';
 	}
 }
