@@ -1,6 +1,7 @@
 <?php
 namespace Ecommerce\Rest\Action\Customer;
 
+use Ecommerce\Address\AddModifyData as AddressAddModifyData;
 use Ecommerce\Customer\Auth\RegisterData as CustomerRegisterData;
 use Ecommerce\Customer\Auth\RegisterHandler;
 use Ecommerce\Rest\Action\Base;
@@ -70,6 +71,24 @@ class Register extends Base implements LoginExempt
 						? $values->get(RegisterData::TAX_NUMBER)->getValue()
 						: null
 				)
+			->setAddressData(
+				AddressAddModifyData::create()
+					->setZip(
+						$values->getRawValue(RegisterData::ADDRESS_ZIP)
+					)
+					->setCity(
+						$values->getRawValue(RegisterData::ADDRESS_CITY)
+					)
+					->setStreet(
+						$values->getRawValue(RegisterData::ADDRESS_STREET)
+					)
+					->setCountry(
+						$values->getRawValue(RegisterData::ADDRESS_COUNTRY)
+					)
+					->setExtra(
+						$values->getRawValue(RegisterData::ADDRESS_STREET_EXTRA)
+					)
+			)
 		);
 
 		if ($registerResult->isSuccess())

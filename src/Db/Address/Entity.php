@@ -82,7 +82,7 @@ class Entity
 	 * @var CustomerEntity
 	 *
 	 * @ORM\ManyToOne(targetEntity="Ecommerce\Db\Customer\Entity", inversedBy="addresses")
-	 * @ORM\JoinColumn(name="customerId", referencedColumnName="id", nullable=false)
+	 * @ORM\JoinColumn(name="customerId", referencedColumnName="id", nullable=false, onDelete="CASCADE")
 	 */
 	private $customer;
 

@@ -5,6 +5,7 @@ use Common\RequestData\Data;
 use Common\RequestData\PropertyDefinition\Email;
 use Common\RequestData\PropertyDefinition\PropertyDefinition;
 use Common\RequestData\PropertyDefinition\Text;
+use Common\Country\Validator as CountryValidator;
 use Ecommerce\Customer\SalutationValidator;
 
 class RegisterData extends Data
@@ -19,7 +20,11 @@ class RegisterData extends Data
 	const COMPANY         = 'company';
 	const TAX_NUMBER      = 'taxNumber';
 
-	//const ADDRESS    = 'address'; // TODO
+	const ADDRESS_ZIP          = 'address.zip';
+	const ADDRESS_CITY         = 'address.city';
+	const ADDRESS_STREET       = 'address.street';
+	const ADDRESS_STREET_EXTRA = 'address.streetExtra';
+	const ADDRESS_COUNTRY      = 'address.country';
 
 	/**
 	 * @return PropertyDefinition[]
@@ -65,9 +70,27 @@ class RegisterData extends Data
 				->setName(self::TAX_NUMBER)
 				->setLabel(_('UID'))
 				->setRequired(false),
-			/*DataSet::create()
-				->setName(self::ADDRESS)
-				->setRequired(true),*/
+			Text::create()
+				->setName(self::ADDRESS_ZIP)
+				->setLabel(_('PLZ'))
+				->setRequired(true),
+			Text::create()
+				->setName(self::ADDRESS_CITY)
+				->setLabel(_('Ort'))
+				->setRequired(true),
+			Text::create()
+				->setName(self::ADDRESS_STREET)
+				->setLabel(_('Straße'))
+				->setRequired(true),
+			Text::create()
+				->setName(self::ADDRESS_STREET_EXTRA)
+				->setLabel(_('Straße (Zusatz)'))
+				->setRequired(false),
+			Text::create()
+				->setName(self::ADDRESS_COUNTRY)
+				->setLabel(_('Land'))
+				->addValidator($this->container->get(CountryValidator::class))
+				->setRequired(true),
 		];
 	}
 }

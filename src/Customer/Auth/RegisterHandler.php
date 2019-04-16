@@ -1,6 +1,7 @@
 <?php
 namespace Ecommerce\Customer\Auth;
 
+use Ecommerce\Address\AddModifyHandler as AddressAddModifyHandler;
 use Ecommerce\Common\DtoCreatorProvider;
 use Ecommerce\Customer\CustomerWithEmailAlreadyExistsError;
 use Ecommerce\Customer\Provider;
@@ -37,25 +38,33 @@ class RegisterHandler
 	private $activateMailSender;
 
 	/**
+	 * @var AddressAddModifyHandler
+	 */
+	private $addressAddModifyHandler;
+
+	/**
 	 * @param Provider $customerProvider
 	 * @param DtoCreatorProvider $dtoCreatorProvider
 	 * @param Saver $entitySaver
 	 * @param PasswordHandler $passwordHandler
 	 * @param ActivateMailSender $activateMailSender
+	 * @param AddressAddModifyHandler $addressAddModifyHandler
 	 */
 	public function __construct(
 		Provider $customerProvider,
 		DtoCreatorProvider $dtoCreatorProvider,
 		Saver $entitySaver,
 		PasswordHandler $passwordHandler,
-		ActivateMailSender $activateMailSender
+		ActivateMailSender $activateMailSender,
+		AddressAddModifyHandler $addressAddModifyHandler
 	)
 	{
-		$this->customerProvider   = $customerProvider;
-		$this->dtoCreatorProvider = $dtoCreatorProvider;
-		$this->entitySaver        = $entitySaver;
-		$this->passwordHandler    = $passwordHandler;
-		$this->activateMailSender = $activateMailSender;
+		$this->customerProvider        = $customerProvider;
+		$this->dtoCreatorProvider      = $dtoCreatorProvider;
+		$this->entitySaver             = $entitySaver;
+		$this->passwordHandler         = $passwordHandler;
+		$this->activateMailSender      = $activateMailSender;
+		$this->addressAddModifyHandler = $addressAddModifyHandler;
 	}
 
 	/**
@@ -102,6 +111,21 @@ class RegisterHandler
 			$customer = $this->dtoCreatorProvider
 				->getCustomerCreator()
 				->byEntity($entity);
+
+			// add address as default billing and shipping
+			$addressAddModifyData = $data->getAddressData();
+			$addressAddModifyData->setCustomer($customer);
+			$addressAddModifyData->setDefaultBilling(true);
+			$addressAddModifyData->setDefaultShipping(true);
+
+			$addAddressResult = $this->addressAddModifyHandler->addOrModify($addressAddModifyData);
+
+			if (!$addAddressResult->isSuccess())
+			{
+				$result->setErrors($addAddressResult->getErrors());
+
+				return $result;
+			}
 
 			if ($this->activateMailSender->send($customer))
 			{

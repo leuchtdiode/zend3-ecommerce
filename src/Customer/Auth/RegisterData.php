@@ -1,6 +1,8 @@
 <?php
 namespace Ecommerce\Customer\Auth;
 
+use Ecommerce\Address\AddModifyData as AddressAddModifyData;
+
 class RegisterData
 {
 	/**
@@ -47,6 +49,11 @@ class RegisterData
 	 * @var string|null
 	 */
 	private $taxNumber;
+
+	/**
+	 * @var AddressAddModifyData
+	 */
+	private $addressData;
 
 	/**
 	 * @return RegisterData
@@ -215,6 +222,24 @@ class RegisterData
 	public function setTaxNumber(?string $taxNumber): RegisterData
 	{
 		$this->taxNumber = $taxNumber;
+		return $this;
+	}
+
+	/**
+	 * @return AddressAddModifyData
+	 */
+	public function getAddressData(): AddressAddModifyData
+	{
+		return $this->addressData;
+	}
+
+	/**
+	 * @param AddressAddModifyData $addressData
+	 * @return RegisterData
+	 */
+	public function setAddressData(AddressAddModifyData $addressData): RegisterData
+	{
+		$this->addressData = $addressData;
 		return $this;
 	}
 }
