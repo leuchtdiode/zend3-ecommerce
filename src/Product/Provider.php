@@ -41,6 +41,17 @@ class Provider
 	}
 
 	/**
+	 * @param string $number
+	 * @return Product|null
+	 */
+	public function byNumber($number)
+	{
+		return ($entity = $this->repository->findOneBy(['number' => $number]))
+			? $this->createDto($entity)
+			: null;
+	}
+
+	/**
 	 * @param FilterChain $filterChain
 	 * @param OrderChain|null $orderChain
 	 * @param int $offset
