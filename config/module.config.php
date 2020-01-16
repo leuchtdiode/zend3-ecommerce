@@ -17,13 +17,13 @@ return [
 	'ecommerce' => [
 		'payment' => [
 			'method' => [
-				Method::PAY_PAL => [
+				Method::PAY_PAL     => [
 					'handler' => PayPalMethodHandler::class,
 					'options' => [
 						// ... local config
 					],
 				],
-				Method::AMAZON_PAY => [
+				Method::AMAZON_PAY  => [
 					'handler' => AmazonPayMethodHandler::class,
 					'options' => [
 						// ... local config
@@ -81,6 +81,16 @@ return [
 				'drivers' => [
 					'Ecommerce' => 'ecommerce_entities',
 				],
+			],
+		],
+	],
+
+	'translator' => [
+		'translation_file_patterns' => [
+			[
+				'type'     => 'gettext',
+				'base_dir' => __DIR__ . '/../language',
+				'pattern'  => '%s.mo',
 			],
 		],
 	],

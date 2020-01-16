@@ -167,7 +167,7 @@ class MethodHandler implements MethodHandlerInterface
 
 		$amount = new Amount();
 		$amount->setCurrency('USD') // TODO for testing
-			->setTotal($totalAmount)
+		->setTotal($totalAmount)
 			->setDetails($details);
 
 		$payPalTransaction = new PayPalTransaction();
@@ -175,7 +175,7 @@ class MethodHandler implements MethodHandlerInterface
 			->setAmount($amount)
 			->setDescription(
 				sprintf(
-					Translator::translate('Bestellung %s von reblaus.wine'),
+					Translator::translate('Bestellung %s'),
 					$transaction->getReferenceNumber()
 				)
 			)
