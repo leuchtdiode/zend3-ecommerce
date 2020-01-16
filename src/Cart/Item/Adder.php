@@ -146,6 +146,11 @@ class Adder
 		$itemEntity->setCart($cart->getEntity());
 		$itemEntity->setProduct($product->getEntity());
 
+		$cart
+			->getEntity()
+			->getItems()
+			->add($itemEntity);
+
 		return $itemEntity;
 	}
 }
