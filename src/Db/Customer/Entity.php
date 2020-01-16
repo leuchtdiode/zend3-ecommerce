@@ -95,6 +95,13 @@ class Entity
 	private $forgotPasswordHash;
 
 	/**
+	 * @var string|null
+	 *
+	 * @ORM\Column(type="string", length=10, nullable=true)
+	 */
+	private $locale;
+
+	/**
 	 * @var DateTime
 	 *
 	 * @ORM\Column(type="datetime")
@@ -293,6 +300,22 @@ class Entity
 	public function setForgotPasswordHash(?string $forgotPasswordHash): void
 	{
 		$this->forgotPasswordHash = $forgotPasswordHash;
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getLocale(): ?string
+	{
+		return $this->locale;
+	}
+
+	/**
+	 * @param string|null $locale
+	 */
+	public function setLocale(?string $locale): void
+	{
+		$this->locale = $locale;
 	}
 
 	/**

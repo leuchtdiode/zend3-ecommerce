@@ -165,6 +165,16 @@ class Customer implements ArrayHydratable
 	/**
 	 * @ObjectToArrayHydratorProperty
 	 *
+	 * @return null|string
+	 */
+	public function getLocale()
+	{
+		return $this->entity->getLocale();
+	}
+
+	/**
+	 * @ObjectToArrayHydratorProperty
+	 *
 	 * @return DateTime
 	 */
 	public function getCreatedDate()
