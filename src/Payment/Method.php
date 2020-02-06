@@ -9,6 +9,7 @@ class Method implements ArrayHydratable
 	const PAY_PAL     = 'paypal';
 	const AMAZON_PAY  = 'amazon-pay';
 	const PRE_PAYMENT = 'pre-payment';
+	const WIRECARD    = 'wirecard';
 
 	use IdLabelObject;
 

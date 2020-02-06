@@ -167,7 +167,7 @@ class MethodHandler implements MethodHandlerInterface
 
 		$amount = new Amount();
 		$amount->setCurrency('USD') // TODO for testing
-		->setTotal($totalAmount)
+			->setTotal($totalAmount)
 			->setDetails($details);
 
 		$payPalTransaction = new PayPalTransaction();

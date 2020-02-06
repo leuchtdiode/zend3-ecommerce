@@ -59,6 +59,7 @@ class MethodHandler implements MethodHandlerInterface
 	public function init(InitData $data): InitResult
 	{
 		$initResult = new InitResult();
+		$initResult->setSuccess(false);
 
 		$saveResult = $this->saver->save(
 			SaveData::create()

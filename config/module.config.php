@@ -8,6 +8,7 @@ use Ecommerce\Payment\MethodHandler\AmazonPay\MethodHandler as AmazonPayMethodHa
 use Ecommerce\Payment\MethodHandler\PayPal\MethodHandler as PayPalMethodHandler;
 use Ecommerce\Payment\MethodHandler\PayPal\PendingCheckProcessor;
 use Ecommerce\Payment\MethodHandler\PrePayment\MethodHandler as PrePaymentMethodHandler;
+use Ecommerce\Payment\MethodHandler\Wirecard\MethodHandler as WirecardMethodHandler;
 use Ecommerce\Rest\Action\Plugin\Auth;
 use Ecommerce\Rest\Action\Plugin\AuthFactory;
 use Ramsey\Uuid\Doctrine\UuidType;
@@ -33,6 +34,19 @@ return [
 					'handler' => PrePaymentMethodHandler::class,
 					'options' => [
 						// ... local config
+					],
+				],
+				Method::WIRECARD    => [
+					'handler' => WirecardMethodHandler::class,
+					'options' => [
+						'hostTest' => 'https://wpp-test.wirecard.com',
+						'hostLive' => 'https://wpp.wirecard.com',
+						// ... local config
+						// -> sandbox (true|false)
+						// -> merchantAccountId (UUID)
+						// -> username
+						// -> password
+						// -> secretKey
 					],
 				],
 			]

@@ -7,6 +7,7 @@ use Ecommerce\Rest\Action\Payment\Callback;
 $callbackTypes = [
 	CallbackType::SUCCESS,
 	CallbackType::CANCEL,
+	CallbackType::ERROR,
 ];
 
 return HttpRouteCreator::create()

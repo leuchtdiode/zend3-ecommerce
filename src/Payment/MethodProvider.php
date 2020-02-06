@@ -14,6 +14,7 @@ class MethodProvider
 			$this->create(Method::PAY_PAL, _('PayPal')),
 			$this->create(Method::AMAZON_PAY, _('Amazon Pay')),
 			$this->create(Method::PRE_PAYMENT, _('Vorkasse')),
+			$this->create(Method::WIRECARD, _('Wirecard')),
 		];
 	}
 
