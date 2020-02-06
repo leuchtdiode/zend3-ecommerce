@@ -83,7 +83,7 @@ class MethodHandler implements MethodHandlerInterface
 			$transaction->getId()
 		);
 
-		$options = $this->config['ecommerce']['payment']['method'][Method::WIRECARD]['options'];
+		$options = $this->getOptions();
 
 		$host = ($options['sandbox'] ?? true)
 			? $options['hostTest']
@@ -179,12 +179,22 @@ class MethodHandler implements MethodHandlerInterface
 		$result = new HandleCallbackResult();
 		$result->setTransactionStatus(Status::ERROR);
 
+		$options = $this->getOptions();
 		$request = $data->getRequest();
 
-		$base64Decoded = base64_decode(
-			$request
-				->getPost('response-base64')
-		);
+		$responseBase64  = $request->getPost('response-base64');
+		$signatureBase64 = $request->getPost('response-signature-base64');
+
+		$signature = hash_hmac('sha256', $responseBase64, $options['secretKey'], true);
+
+		if (!hash_equals($signature, base64_decode($signatureBase64)))
+		{
+			Log::error('Wirecard init signature hash did not match secret');
+
+			return $result;
+		}
+
+		$base64Decoded = base64_decode($responseBase64);
 
 		Log::debug('Wirecard callback response: ' . json_encode($response));
 
@@ -239,10 +249,18 @@ class MethodHandler implements MethodHandlerInterface
 					Status::PENDING
 				);
 
-				// TODO start async queue process or something like that?
+			// TODO start async queue process or something like that?
 		}
 
 		return $result;
+	}
+
+	/**
+	 * @return array
+	 */
+	private function getOptions()
+	{
+		return $this->config['ecommerce']['payment']['method'][Method::WIRECARD]['options'];
 	}
 
 	/**
