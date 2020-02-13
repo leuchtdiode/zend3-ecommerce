@@ -228,7 +228,7 @@ class MethodHandler implements MethodHandlerInterface
 			return $result;
 		}
 
-		switch ($payment->{'transaction-state'})
+		switch ($transactionState = $payment->{'transaction-state'})
 		{
 			case 'success':
 				$result->setTransactionStatus(
@@ -244,12 +244,14 @@ class MethodHandler implements MethodHandlerInterface
 
 				break;
 
-			default:
+			default: // actually this should not be possible according to wirecard support
 				$result->setTransactionStatus(
 					Status::PENDING
 				);
 
-			// TODO start async queue process or something like that?
+				Log::error('Wirecard transaction state was neither success, nor failed (' . $transactionState . ')');
+
+				break;
 		}
 
 		return $result;
