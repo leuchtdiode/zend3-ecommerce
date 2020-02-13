@@ -8,6 +8,7 @@ class Salutation implements ArrayHydratable
 {
 	const MALE   = 'male';
 	const FEMALE = 'female';
+	const X      = 'x';
 
 	use IdLabelObject;
 }

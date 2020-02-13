@@ -13,6 +13,7 @@ class SalutationProvider
 		return [
 			$this->create(Salutation::MALE, _('Herr')),
 			$this->create(Salutation::FEMALE, _('Frau')),
+			$this->create(Salutation::X, _('X')),
 		];
 	}
 
