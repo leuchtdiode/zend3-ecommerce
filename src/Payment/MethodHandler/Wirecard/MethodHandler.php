@@ -102,7 +102,7 @@ class MethodHandler implements MethodHandlerInterface
 						'value' => $options['merchantAccountId'],
 					],
 					'request-id'           => $transactionId,
-					'transaction-type'     => 'authorization',
+					'transaction-type'     => 'auto-sale',
 					'requested-amount'     => [
 						'value'    => $transaction
 								->getTotalPrice()
